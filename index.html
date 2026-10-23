@@ -9,11 +9,11 @@
 <title>匹克球大滿貫 Pickleball Jam Q版</title>
 <style>
   :root {
-    --bg-dark: #0f172a;
-    --court-outer: #1e3a5f;
-    --court-play: #2563eb;
-    --kitchen-color: #ea580c;
-    --line-color: #f8fafc;
+    --bg-dark: #14532d;
+    --court-outer: #10b981;
+    --court-play: #0284c7;
+    --kitchen-color: #f97316;
+    --line-color: #ffffff;
   }
   * {
     box-sizing: border-box;
@@ -25,10 +25,9 @@
     -webkit-tap-highlight-color: transparent;
   }
   html, body {
-    position: fixed;
-    inset: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     overflow: hidden;
     background: var(--bg-dark);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
@@ -40,22 +39,21 @@
     position: relative;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: space-between;
-    padding-top: env(safe-area-inset-top, 4px);
-    padding-bottom: env(safe-area-inset-bottom, 4px);
-    padding-left: env(safe-area-inset-left, 4px);
-    padding-right: env(safe-area-inset-right, 4px);
-    overflow: hidden;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   /* 頂部資訊列 */
   #hud {
     width: 100%;
-    padding: 4px 10px;
-    background: rgba(15, 23, 42, 0.96);
-    border-bottom: 1px solid rgba(255,255,255,0.14);
+    max-width: 640px;
+    padding: 4px 8px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(30, 58, 95, 0.90));
+    border-bottom: 1px solid rgba(255,255,255,0.22);
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -63,35 +61,32 @@
     flex-shrink: 0;
   }
   .hud-top {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 4px;
   }
   .score-box {
     display: flex;
     align-items: center;
-    gap: 4px;
-    background: rgba(30, 41, 59, 0.9);
-    padding: 2px 7px;
+    gap: 5px;
+    background: rgba(30, 41, 59, 0.92);
+    padding: 2px 8px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.18);
     font-weight: 800;
-    font-size: clamp(11px, 2.8vw, 13px);
+    font-size: 12px;
     white-space: nowrap;
   }
   .score-num {
-    font-size: clamp(14px, 3.5vw, 17px);
+    font-size: 16px;
     color: #facc15;
     margin: 0 1px;
+    text-shadow: 0 0 6px rgba(250,204,21,0.45);
   }
   .serve-badge {
     display: inline-block;
-    font-size: 10px;
+    font-size: 9.5px;
     padding: 1px 4px;
     border-radius: 4px;
     background: #22c55e;
@@ -100,17 +95,16 @@
   }
   .hud-controls {
     display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    gap: 3px;
+    flex-wrap: nowrap;
   }
   .mini-btn {
     background: #1e293b;
     color: #e2e8f0;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.22);
     border-radius: 6px;
     padding: 3px 6px;
-    font-size: clamp(10px, 2.5vw, 11.5px);
+    font-size: 10.5px;
     font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
@@ -122,6 +116,11 @@
     background: #166534;
     border-color: #4ade80;
     color: #fff;
+  }
+  .mini-btn.manual-pro {
+    background: #0369a1;
+    border-color: #38bdf8;
+    color: #f0f9ff;
   }
   .mini-btn.ai-easy {
     background: #065f46;
@@ -144,16 +143,13 @@
     color: #f3e8ff;
   }
   .hud-bottom {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: clamp(10.5px, 2.6vw, 12px);
-    background: rgba(30, 41, 59, 0.75);
+    font-size: 11px;
+    background: rgba(30, 41, 59, 0.78);
     padding: 2px 8px;
-    border-radius: 6px;
+    border-radius: 5px;
     gap: 6px;
   }
   #rule-status {
@@ -169,14 +165,15 @@
     white-space: nowrap;
   }
 
-  /* 教學任務橫幅 */
+  /* 互動教學任務橫幅 */
   #practice-banner {
     display: none;
     width: 100%;
+    max-width: 640px;
     background: linear-gradient(90deg, #4c1d95, #1e3a8a);
     border-bottom: 2px solid #a855f7;
     padding: 4px 10px;
-    font-size: clamp(11px, 2.6vw, 12px);
+    font-size: 11.5px;
     z-index: 12;
     align-items: center;
     justify-content: space-between;
@@ -188,7 +185,7 @@
   }
   .practice-text {
     flex: 1;
-    line-height: 1.3;
+    line-height: 1.25;
   }
   .practice-step-tag {
     background: #facc15;
@@ -196,23 +193,22 @@
     font-weight: 900;
     padding: 1px 5px;
     border-radius: 4px;
-    font-size: 10.5px;
+    font-size: 10px;
     margin-right: 4px;
   }
 
-  /* 畫布區：佔滿剩餘全螢幕空間且不裁切 */
+  /* 畫布包裝區 */
   #canvas-wrap {
     position: relative;
     flex: 1 1 auto;
     width: 100%;
-    height: 100%;
+    max-width: 640px;
     min-height: 0;
-    min-width: 0;
-    background: #0f2942;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background: radial-gradient(circle at 50% 45%, #4ade80 0%, #15803d 100%);
   }
   canvas {
     display: block;
@@ -220,17 +216,17 @@
     height: 100%;
   }
 
-  /* 底部操控區：高度隨螢幕自動縮放，避免擠壓球場 */
+  /* 底部手機操控區 */
   #controls {
     width: 100%;
-    height: clamp(96px, 18dvh, 134px);
-    background: linear-gradient(to top, rgba(15,23,42,0.98), rgba(15,23,42,0.9));
+    max-width: 640px;
+    height: 140px;
+    background: linear-gradient(to top, rgba(10,18,34,0.99), rgba(15,23,42,0.88));
     border-top: 1px solid rgba(255,255,255,0.14);
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: clamp(10px, 3vw, 28px);
-    padding: 4px 12px 6px;
+    justify-content: space-between;
+    padding: 5px 12px 8px;
     z-index: 10;
     flex-shrink: 0;
   }
@@ -238,29 +234,28 @@
   /* 左側虛擬搖桿 */
   #joystick-zone {
     position: relative;
-    width: clamp(82px, 15dvh, 110px);
-    height: clamp(82px, 15dvh, 110px);
+    width: 112px;
+    height: 112px;
     display: flex;
     align-items: center;
     justify-content: center;
     touch-action: none;
-    flex-shrink: 0;
   }
   #joystick-base {
-    width: 88%;
-    height: 88%;
+    width: 98px;
+    height: 98px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(51,65,85,0.7) 0%, rgba(15,23,42,0.92) 100%);
-    border: 2px solid rgba(148,163,184,0.45);
+    background: radial-gradient(circle, rgba(51,65,85,0.75) 0%, rgba(15,23,42,0.95) 100%);
+    border: 2px solid rgba(148,163,184,0.48);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: inset 0 0 12px rgba(0,0,0,0.6);
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.65);
   }
   #joystick-stick {
-    width: 42%;
-    height: 42%;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb);
     border: 2px solid #bfdbfe;
@@ -271,12 +266,12 @@
   }
   .joy-label {
     position: absolute;
-    bottom: -2px;
+    bottom: -4px;
     font-size: 9.5px;
     color: #94a3b8;
     font-weight: 700;
-    white-space: nowrap;
     pointer-events: none;
+    white-space: nowrap;
   }
 
   /* 右側四鍵戰術面板 */
@@ -285,15 +280,15 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 6px;
-    flex: 1;
-    max-width: 360px;
-    height: 92%;
+    width: calc(100% - 122px);
+    max-width: 330px;
+    height: 118px;
     touch-action: none;
   }
   .shot-btn {
     position: relative;
-    border-radius: 10px;
-    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 11px;
+    border: 2px solid rgba(255,255,255,0.28);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -301,7 +296,7 @@
     color: #fff;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.3);
     padding: 2px 4px;
     text-align: center;
     touch-action: none;
@@ -315,104 +310,36 @@
     border-color: #86efac;
   }
   .shot-btn .btn-title {
-    font-size: clamp(11.5px, 2.8vw, 13.5px);
-    line-height: 1.1;
-    pointer-events: none;
-  }
-  .shot-btn .btn-sub {
-    font-size: clamp(8.5px, 2.1vw, 9.5px);
-    font-weight: 600;
-    opacity: 0.9;
-    margin-top: 1px;
-    pointer-events: none;
-  }
-  .joy-label {
-    position: absolute;
-    bottom: -3px;
-    font-size: 10px;
-    color: #94a3b8;
-    font-weight: 700;
-    pointer-events: none;
-  }
-
-  /* 右側四鍵戰術面板 */
-  #action-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 7px;
-    width: calc(100% - 130px);
-    max-width: 310px;
-    height: 124px;
-    touch-action: none;
-  }
-  .shot-btn {
-    position: relative;
-    border-radius: 12px;
-    border: 2px solid rgba(255,255,255,0.25);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    padding: 3px 4px;
-    text-align: center;
-    touch-action: none;
-  }
-  .shot-btn.pressed {
-    transform: scale(0.92);
-    filter: brightness(1.25);
-  }
-  .shot-btn.ready-glow {
-    box-shadow: 0 0 14px #4ade80, inset 0 0 8px rgba(255,255,255,0.45);
-    border-color: #86efac;
-  }
-  .shot-btn .btn-title {
-    font-size: 13.5px;
+    font-size: 13px;
     line-height: 1.15;
     pointer-events: none;
   }
   .shot-btn .btn-sub {
-    font-size: 9.5px;
+    font-size: 9px;
     font-weight: 600;
-    opacity: 0.9;
-    margin-top: 2px;
+    opacity: 0.92;
+    margin-top: 1px;
     pointer-events: none;
   }
-  #btn-topspin {
-    background: linear-gradient(135deg, #ea580c, #b91c1c);
-    border-color: #fdba74;
-  }
-  #btn-slice {
-    background: linear-gradient(135deg, #0284c7, #1d4ed8);
-    border-color: #7dd3fc;
-  }
-  #btn-dink {
-    background: linear-gradient(135deg, #059669, #047857);
-    border-color: #6ee7b7;
-  }
-  #btn-lob {
-    background: linear-gradient(135deg, #7c3aed, #4338ca);
-    border-color: #c4b5fd;
-  }
+  #btn-topspin { background: linear-gradient(135deg, #ea580c, #b91c1c); border-color: #fdba74; }
+  #btn-slice { background: linear-gradient(135deg, #0284c7, #1d4ed8); border-color: #7dd3fc; }
+  #btn-dink { background: linear-gradient(135deg, #059669, #047857); border-color: #6ee7b7; }
+  #btn-lob { background: linear-gradient(135deg, #7c3aed, #4338ca); border-color: #c4b5fd; }
   #btn-lob.smash-mode {
     background: linear-gradient(135deg, #dc2626, #991b1b);
     border-color: #fef08a;
-    animation: pulseSmash 0.5s infinite alternate;
+    animation: pulseSmash 0.45s infinite alternate;
   }
   @keyframes pulseSmash {
-    from { box-shadow: 0 0 8px #facc15; }
-    to { box-shadow: 0 0 20px #ef4444; }
+    from { box-shadow: 0 0 8px #facc15; transform: scale(1); }
+    to { box-shadow: 0 0 22px #ef4444; transform: scale(1.03); }
   }
 
-  /* 新手教學與難度選擇 Modal */
+  /* 教學與設定 Modal */
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(2, 6, 23, 0.86);
+    background: rgba(2, 6, 23, 0.88);
     backdrop-filter: blur(5px);
     display: none;
     align-items: center;
@@ -420,20 +347,18 @@
     z-index: 100;
     padding: 12px;
   }
-  .modal-overlay.show {
-    display: flex;
-  }
+  .modal-overlay.show { display: flex; }
   .modal-card {
     width: 100%;
     max-width: 500px;
     max-height: 90dvh;
     background: #1e293b;
-    border: 2px solid rgba(148,163,184,0.3);
+    border: 2px solid rgba(148,163,184,0.35);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
   }
   .modal-header {
     padding: 10px 14px;
@@ -443,12 +368,7 @@
     justify-content: space-between;
     border-bottom: 1px solid rgba(255,255,255,0.1);
   }
-  .modal-title {
-    font-size: 15px;
-    font-weight: 900;
-    color: #facc15;
-  }
-  /* 彈窗內的難度選擇器 */
+  .modal-title { font-size: 14.5px; font-weight: 900; color: #facc15; }
   .diff-selector-bar {
     background: #111c33;
     padding: 8px 12px;
@@ -458,101 +378,67 @@
     justify-content: space-between;
     gap: 6px;
   }
-  .diff-label {
-    font-size: 12px;
-    font-weight: 800;
-    color: #cbd5e1;
-    white-space: nowrap;
-  }
-  .diff-btn-group {
-    display: flex;
-    gap: 6px;
-    flex: 1;
-    justify-content: flex-end;
-  }
+  .diff-label { font-size: 11.5px; font-weight: 800; color: #cbd5e1; white-space: nowrap; }
+  .diff-btn-group { display: flex; gap: 5px; flex: 1; justify-content: flex-end; }
   .diff-opt {
     flex: 1;
-    max-width: 96px;
+    max-width: 92px;
     padding: 5px 6px;
-    border-radius: 8px;
+    border-radius: 7px;
     border: 1px solid rgba(255,255,255,0.2);
     background: #1e293b;
     color: #94a3b8;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 800;
     cursor: pointer;
     text-align: center;
   }
-  .diff-opt.selected[data-diff="0"] {
-    background: #065f46;
-    color: #fff;
-    border-color: #34d399;
-    box-shadow: 0 0 8px rgba(52,211,153,0.4);
-  }
-  .diff-opt.selected[data-diff="1"] {
-    background: #1e40af;
-    color: #fff;
-    border-color: #60a5fa;
-    box-shadow: 0 0 8px rgba(96,165,250,0.4);
-  }
-  .diff-opt.selected[data-diff="2"] {
-    background: #991b1b;
-    color: #fff;
-    border-color: #f87171;
-    box-shadow: 0 0 8px rgba(248,113,113,0.4);
-  }
+  .diff-opt.selected[data-diff="0"] { background: #065f46; color: #fff; border-color: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.4); }
+  .diff-opt.selected[data-diff="1"] { background: #1e40af; color: #fff; border-color: #60a5fa; box-shadow: 0 0 8px rgba(96,165,250,0.4); }
+  .diff-opt.selected[data-diff="2"] { background: #991b1b; color: #fff; border-color: #f87171; box-shadow: 0 0 8px rgba(248,113,113,0.4); }
 
   .tab-bar {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     background: #0f172a;
-    padding: 6px 6px;
+    padding: 6px;
     gap: 4px;
   }
   .tab-btn {
     background: #1e293b;
     color: #94a3b8;
     border: 1px solid rgba(255,255,255,0.1);
-    padding: 6px 2px;
-    border-radius: 7px;
-    font-size: 11.5px;
+    padding: 5px 2px;
+    border-radius: 6px;
+    font-size: 11px;
     font-weight: 800;
     cursor: pointer;
     text-align: center;
   }
-  .tab-btn.active {
-    background: #2563eb;
-    color: #fff;
-    border-color: #93c5fd;
-  }
+  .tab-btn.active { background: #2563eb; color: #fff; border-color: #93c5fd; }
   .modal-body {
     padding: 12px 14px;
     overflow-y: auto;
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1.5;
     color: #e2e8f0;
-    -webkit-overflow-scrolling: touch;
   }
   .tut-page { display: none; }
   .tut-page.active { display: block; }
   .info-card {
-    background: rgba(15, 23, 42, 0.7);
+    background: rgba(15, 23, 42, 0.75);
     border-left: 4px solid #38bdf8;
-    border-radius: 8px;
+    border-radius: 7px;
     padding: 8px 10px;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
-  .info-card h4 {
-    color: #fff;
-    font-size: 13.5px;
-    margin-bottom: 3px;
-  }
+  .info-card h4 { color: #fff; font-size: 13px; margin-bottom: 3px; }
   .diagram-box {
     background: #0f172a;
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 10px;
     padding: 8px;
-    margin: 6px 0 10px;
+    margin: 4px 0 8px;
     text-align: center;
   }
   .modal-footer {
@@ -568,9 +454,9 @@
     color: #052e16;
     font-weight: 900;
     border: none;
-    padding: 8px 14px;
-    border-radius: 9px;
-    font-size: 13px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
     cursor: pointer;
   }
   .btn-practice {
@@ -578,9 +464,9 @@
     color: #fff;
     font-weight: 900;
     border: 1px solid #d8b4fe;
-    padding: 8px 12px;
-    border-radius: 9px;
-    font-size: 13px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 12.5px;
     cursor: pointer;
   }
 </style>
@@ -600,8 +486,8 @@
       </div>
       <div class="hud-controls">
         <button id="btn-ai-diff" class="mini-btn ai-easy" title="點擊切換 AI 強度">🌱 AI:初級</button>
-        <button id="btn-assist" class="mini-btn active">🏃 輔助:開</button>
-        <button id="btn-speed" class="mini-btn">⏱️ 90%節奏</button>
+        <button id="btn-assist" class="mini-btn active" title="切換自動跑位輔助或純手動爆發模式">🏃 輔助:開</button>
+        <button id="btn-speed" class="mini-btn">⏱️ 標準節奏</button>
         <button id="btn-open-tut" class="mini-btn tut-btn">📖 教學</button>
         <button id="btn-fullscreen" class="mini-btn">⛶</button>
       </div>
@@ -632,13 +518,13 @@
       <div id="joystick-base">
         <div id="joystick-stick"></div>
       </div>
-      <div class="joy-label">左手搖桿移動/瞄準</div>
+      <div class="joy-label" id="joy-hint">左手搖桿移動/控深</div>
     </div>
 
     <div id="action-grid">
       <button id="btn-topspin" class="shot-btn" data-shot="topspin">
         <div class="btn-title">🔥 上旋抽球</div>
-        <div class="btn-sub">平低弧線・落地前衝</div>
+        <div class="btn-sub">平低弧線・落地加速</div>
       </button>
       <button id="btn-slice" class="shot-btn" data-shot="slice">
         <div class="btn-title">❄️ 下旋切削</div>
@@ -656,15 +542,14 @@
   </div>
 </div>
 
-<!-- 新手教學與規則圖解 Modal -->
+<!-- 教學與難度選擇 Modal -->
 <div id="tutorial-modal" class="modal-overlay show">
   <div class="modal-card">
     <div class="modal-header">
-      <div class="modal-title">🏓 匹克球大滿貫 — AI 難度與得分指南</div>
+      <div class="modal-title">🏓 匹克球大滿貫 — 戰術、球路與 AI 指南</div>
       <button id="btn-close-x" class="mini-btn">✕ 關閉</button>
     </div>
 
-    <!-- AI 難度直接選擇列 -->
     <div class="diff-selector-bar">
       <span class="diff-label">🤖 選擇對手 AI 強度：</span>
       <div class="diff-btn-group">
@@ -675,75 +560,64 @@
     </div>
 
     <div class="tab-bar">
-      <button class="tab-btn active" data-tab="tab-1">1.AI難度設定</button>
-      <button class="tab-btn" data-tab="tab-2">2.高低拋物線</button>
-      <button class="tab-btn" data-tab="tab-3">3.上下旋球</button>
-      <button class="tab-btn" data-tab="tab-4">4.核心規則</button>
+      <button class="tab-btn active" data-tab="tab-1">1.AI與破防</button>
+      <button class="tab-btn" data-tab="tab-2">2.球種與控深</button>
+      <button class="tab-btn" data-tab="tab-3">3.輔助vs手動</button>
+      <button class="tab-btn" data-tab="tab-4">4.違例規則</button>
     </div>
     <div class="modal-body">
       <div id="tab-1" class="tut-page active">
         <div class="info-card" style="border-left-color:#34d399;">
-          <h4>🌱 初級 AI（25% 機率失誤或出界）</h4>
-          <p>• AI 會積極跑向落點與你對打，並有 <b>25% 機率回球掛網失誤或出界</b>。<br>
-             • 玩家只需穩定將球回擊過網或打向空檔即可得分！</p>
+          <h4>🌱 初級 AI（輕鬆對抽・易被打崩）</h4>
+          <p>• 基礎失誤率較高，當你打出變線球時，AI 頭頂的<b>「重心穩定度條」</b>會快速歸零並打出<b>「🎈 救球冒高」</b>讓你扣殺！</p>
         </div>
         <div class="info-card" style="border-left-color:#60a5fa;">
-          <h4>⚔️ 中級 AI（15% 機率失誤或出界）</h4>
-          <p>• AI 跑位迅速，基礎有 <b>15% 機率失誤或出界</b>。<br>
-             • <b>得分訣竅</b>：透過<b>「球路變換」</b>（例如上旋抽球搭配下旋切削、丁克短球或左右變線），讓 AI 重心偏移來創造得分機會！</p>
+          <h4>⚔️ 中級 AI（需靠「球路變換」破防）</h4>
+          <p>• 若連續打相同球種，AI 防守穩定度不會下降（0% 無故失誤）。<br>• <b>得分關鍵</b>：交替使用上旋、切削、丁克與左右變線，削減 AI 穩定度逼出失誤或高球！</p>
         </div>
         <div class="info-card" style="border-left-color:#f87171;">
-          <h4>👑 高級 AI（6% 出界 ＋ 4% 失誤）</h4>
-          <p>• AI 合計僅 <b>10% 失誤率</b>，移動極快且會主動壓上網前截擊。<br>
-             • <b>得分訣竅</b>：觀察 AI 動向搭配球路變換（AI 上網時打<b>「🌈 高飛吊球」</b>越頂、AI 退底線時放<b>「🪶 網前丁克／❄️ 下旋切削」</b>，或打向 AI 移動的反方向）才能突破得分！</p>
+          <h4>👑 高級 AI（具備識破反擊・雙向壓迫）</h4>
+          <p>• 積極壓上網前截擊！若單調回擊或亂打高吊球，會遭 AI <b>「⚡ 識破球路・極限死角反擊」</b>！善用「⚡ 完美擊球時機」與前後調動才能突破防線。</p>
         </div>
       </div>
 
       <div id="tab-2" class="tut-page">
         <div class="diagram-box">
-          <svg viewBox="0 0 360 105" width="100%" height="95">
-            <line x1="20" y1="90" x2="340" y2="90" stroke="#94a3b8" stroke-width="3"/>
-            <line x1="180" y1="55" x2="180" y2="90" stroke="#ffffff" stroke-width="4"/>
-            <text x="168" y="50" fill="#fff" font-size="10" font-weight="bold">球網</text>
-            <path d="M 40 82 Q 180 -22 320 88" fill="none" stroke="#c084fc" stroke-width="3" stroke-dasharray="5,4"/>
-            <text x="110" y="20" fill="#d8b4fe" font-size="11" font-weight="bold">🌈 高飛吊球 (Lob)：高拋物線越頂</text>
-            <path d="M 110 82 Q 180 32 235 88" fill="none" stroke="#34d399" stroke-width="2.5"/>
-            <text x="195" y="48" fill="#6ee7b7" font-size="10" font-weight="bold">🪶 丁克短吊 (入廚房區)</text>
-            <path d="M 40 82 Q 175 52 310 88" fill="none" stroke="#f97316" stroke-width="3"/>
-            <text x="55" y="78" fill="#fdba74" font-size="11" font-weight="bold">🔥 平緩抽球 (Drive)：貼網高速飛行</text>
+          <svg viewBox="0 0 360 100" width="100%" height="88">
+            <line x1="20" y1="86" x2="340" y2="86" stroke="#94a3b8" stroke-width="3"/>
+            <line x1="180" y1="52" x2="180" y2="86" stroke="#ffffff" stroke-width="4"/>
+            <path d="M 40 78 Q 180 -18 320 84" fill="none" stroke="#c084fc" stroke-width="3" stroke-dasharray="5,4"/>
+            <text x="108" y="18" fill="#d8b4fe" font-size="10.5" font-weight="bold">🌈 高飛吊球 (Lob)：越過網前對手頭頂</text>
+            <path d="M 110 78 Q 180 30 235 84" fill="none" stroke="#34d399" stroke-width="2.5"/>
+            <text x="192" y="46" fill="#6ee7b7" font-size="10" font-weight="bold">🪶 丁克短吊 (入廚房區)</text>
+            <path d="M 40 78 Q 175 50 310 84" fill="none" stroke="#f97316" stroke-width="3"/>
+            <text x="52" y="74" fill="#fdba74" font-size="10.5" font-weight="bold">🔥 上旋平抽 / ❄️ 下旋側曲</text>
           </svg>
         </div>
-        <div class="info-card" style="border-left-color:#f97316;">
-          <h4>⚡ 平緩抽球 vs. 🌈 高飛吊球</h4>
-          <p>• <b>🔥 上旋抽球 / ❄️ 下旋切削</b>：貼網高速平飛，壓迫對手底線。<br>
-             • <b>🪶 網前丁克</b>：中弧度輕放進對手的橘紅色「廚房區」。<br>
-             • <b>🌈 高飛吊球</b>：超高拋物線越過網前對手頭頂！（當對手打高球到網前時，此鍵會自動變成 <b>💥 強力扣殺</b>！）</p>
+        <div class="info-card" style="border-left-color:#facc15;">
+          <h4>⚡ 完美擊球點 (Sweet Spot) ＆ 搖桿前後控深</h4>
+          <p>• <b>⚡ PERFECT 完美擊球</b>：在球彈起處於最佳擊球高度與距離時揮拍，將觸發金色閃光、球速加成並大幅削減 AI 穩定度！<br>
+             • <b>🕹️ 搖桿控深</b>：揮拍時搖桿<b>往前推</b>可壓深底線、<b>往後拉</b>可收短角度！</p>
         </div>
       </div>
 
       <div id="tab-3" class="tut-page">
-        <div class="info-card" style="border-left-color:#f97316;">
-          <h4>🔥 上旋抽球 (Topspin) — 急墜 + 落地加速前衝</h4>
-          <p>球體帶有火紅前旋氣流，過網後快速下墜壓進底線；<b>落地瞬間產生向前摩擦力，球會加速往前猛衝</b>！</p>
+        <div class="info-card" style="border-left-color:#4ade80;">
+          <h4>🏃 輔助：開（智慧導航跑位 ＋ 搖桿瞄準）</h4>
+          <p>• 系統自動帶你跑向第 1 跳落點（包含自動上網救丁克短球，並在廚房線前智慧煞車防違例）。<br>
+             • 你只需專注抓擊球時機，並在揮拍瞬間輕推搖桿決定回球方向與深度！</p>
         </div>
         <div class="info-card" style="border-left-color:#38bdf8;">
-          <h4>❄️ 下旋切削 (Slice) — 側曲飄浮 + 落地急煞低彈</h4>
-          <p>由上往下切削球背，帶有冰藍刀光與<b>側向彎曲弧線</b>；<b>落地瞬間逆向急煞且彈跳極低</b>，讓底線對手措手不及！</p>
+          <h4>👟 輔助：關（純手動專家加成模式！）</h4>
+          <p>• 關閉輔助後由你全權操控跑位，並獲得<b>「👟 專家手動加成」</b>：<b>移動速度 +12%、極限跨步救球範圍擴大、回球角度更刁鑽</b>，適合挑戰高級 AI！</p>
         </div>
       </div>
 
       <div id="tab-4" class="tut-page">
-        <div class="info-card" style="border-left-color:#facc15;">
-          <h4>1️⃣ 雙跳規則 (Two-Bounce Rule)</h4>
-          <p>發球後的<b>第 1 拍（接發球）</b>與<b>第 2 拍（發球方回擊）</b>都<b>必須等球落地彈跳一次後</b>才能擊球！第 3 拍起才可空中截擊。</p>
-        </div>
         <div class="info-card" style="border-left-color:#ea580c;">
-          <h4>2️⃣ 廚房區非截擊規則 (NVZ)</h4>
-          <p>踩在球網兩側橘紅色「廚房區」內時，<b>不可直接打空中未落地的球</b>；若球已先在廚房區落地彈起，則可進入擊球。</p>
-        </div>
-        <div class="info-card" style="border-left-color:#22c55e;">
-          <h4>3️⃣ 對角發球 ＆ 發球得分制</h4>
-          <p>發球須打入對角目標區（不可落入廚房區）。只有握有「發球權」的一方贏球才得分，接發球方贏球則換邊發球。</p>
+          <h4>🚫 廚房區非截擊規則 (NVZ) ＆ 雙跳規則</h4>
+          <p>• <b>廚房區禁截擊</b>：踩在橘紅色廚房區內（含壓線）時，<b>不可直接打空中未落地的球</b>！若球已先落地彈起則可進入擊球。<br>
+             • <b>雙跳規則</b>：發球與接發球前兩拍必須等球落地彈跳一次才能擊球。</p>
         </div>
       </div>
     </div>
@@ -758,19 +632,6 @@
 (() => {
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
-
-  // 確保舊版瀏覽器也有 roundRect 支援
-  if (!ctx.roundRect) {
-    ctx.roundRect = function(x, y, w, h, r) {
-      const radius = Math.min(r, w / 2, h / 2);
-      this.moveTo(x + radius, y);
-      this.arcTo(x + w, y, x + w, y + h, radius);
-      this.arcTo(x + w, y + h, x, y + h, radius);
-      this.arcTo(x, y + h, x, y, radius);
-      this.arcTo(x, y, x + w, y, radius);
-      this.closePath();
-    };
-  }
 
   const pScoreEl = document.getElementById('p-score');
   const aiScoreEl = document.getElementById('ai-score');
@@ -790,6 +651,7 @@
   const practiceBanner = document.getElementById('practice-banner');
   const practiceMsg = document.getElementById('practice-msg');
   const btnExitPractice = document.getElementById('btn-exit-practice');
+  const joyHintEl = document.getElementById('joy-hint');
   const diffOptBtns = document.querySelectorAll('.diff-opt');
 
   const btnTopspin = document.getElementById('btn-topspin');
@@ -800,7 +662,6 @@
   const lobSub = document.getElementById('lob-sub');
   const shotBtns = [btnTopspin, btnSlice, btnDink, btnLob];
 
-  // 全螢幕切換支援
   btnFullscreen.addEventListener('click', () => {
     const docEl = document.documentElement;
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
@@ -812,7 +673,7 @@
     }
   });
 
-  // 音效合成器
+  // Web Audio 合成音效
   let audioCtx = null;
   function unlockAudio() {
     try {
@@ -832,7 +693,14 @@
       osc.connect(gain);
       gain.connect(audioCtx.destination);
 
-      if (type === 'topspin') {
+      if (type === 'perfect') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(340, now);
+        osc.frequency.exponentialRampToValueAtTime(760, now + 0.12);
+        gain.gain.setValueAtTime(0.32, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.13);
+        osc.start(now); osc.stop(now + 0.13);
+      } else if (type === 'topspin') {
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(260, now);
         osc.frequency.exponentialRampToValueAtTime(520, now + 0.09);
@@ -846,7 +714,7 @@
         gain.gain.setValueAtTime(0.18, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.13);
         osc.start(now); osc.stop(now + 0.13);
-      } else if (type === 'dink' || type === 'lob') {
+      } else if (type === 'dink' || type === 'lob' || type === 'popup') {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(380, now);
         osc.frequency.exponentialRampToValueAtTime(240, now + 0.08);
@@ -855,11 +723,11 @@
         osc.start(now); osc.stop(now + 0.09);
       } else if (type === 'smash') {
         osc.type = 'square';
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.exponentialRampToValueAtTime(65, now + 0.16);
-        gain.gain.setValueAtTime(0.32, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.17);
-        osc.start(now); osc.stop(now + 0.17);
+        osc.frequency.setValueAtTime(190, now);
+        osc.frequency.exponentialRampToValueAtTime(58, now + 0.17);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        osc.start(now); osc.stop(now + 0.18);
       } else if (type === 'bounce') {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(480, now);
@@ -878,7 +746,6 @@
     } catch (e) {}
   }
 
-  // 教學分頁切換
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -900,118 +767,117 @@
   });
   btnExitPractice.addEventListener('click', stopPracticeMode);
 
-  // 球場邏輯座標
-  const W = 400;
-  const H = 560;
+  /* 球場邏輯座標與安全視角盒 (擴大左右視野以容納戶外看台、觀眾、遮陽傘與裁判) */
+  const W = 460;
+  const H = 610;
   const COURT = {
-    left: 60,
-    right: 340,
-    top: 55,
-    bottom: 505,
-    netY: 280,
-    kitchenTop: 210,
-    kitchenBottom: 350,
-    centerX: 200
+    left: 80,
+    right: 380,
+    top: 66,
+    bottom: 540,
+    netY: 303,
+    kitchenTop: 227,
+    kitchenBottom: 379,
+    centerX: 230
   };
 
-  /**
-   * 三段 AI 強度設定（失誤率各降 5%，並提升 AI 移動到落點擊球的速度）：
-   * - 初級：25% 機率失誤或出界 (outProb: 0.13, netProb: 0.12)，跑速 3.10
-   * - 中級：15% 機率失誤或出界 (outProb: 0.08, netProb: 0.07)，跑速 3.80
-   * - 高級：10% 機率失誤或出界 (outProb: 0.06, netProb: 0.04)，跑速 4.50
-   */
+  /* 戶外觀眾席與主審裁判狀態 */
+  const spectators = [
+    { x: 20, y: 120, shirt: '#f43f5e', hair: '#1e293b', hat: '#fbbf24', phase: 0.2 },
+    { x: 20, y: 175, shirt: '#38bdf8', hair: '#78350f', hat: null, phase: 1.4 },
+    { x: 20, y: 230, shirt: '#a855f7', hair: '#1e293b', hat: '#f8fafc', phase: 2.6 },
+    { x: 20, y: 385, shirt: '#facc15', hair: '#7c2d12', hat: null, phase: 0.8 },
+    { x: 20, y: 440, shirt: '#fb923c', hair: '#1e293b', hat: '#38bdf8', phase: 2.1 },
+    { x: 20, y: 495, shirt: '#ec4899', hair: '#3f3f46', hat: null, phase: 3.0 },
+    { x: 440, y: 125, shirt: '#22c55e', hair: '#1e293b', hat: '#f8fafc', phase: 0.5 },
+    { x: 440, y: 180, shirt: '#eab308', hair: '#713f12', hat: null, phase: 1.9 },
+    { x: 440, y: 425, shirt: '#06b6d4', hair: '#1e293b', hat: '#f43f5e', phase: 1.1 },
+    { x: 440, y: 480, shirt: '#8b5cf6', hair: '#451a03', hat: null, phase: 2.7 }
+  ];
+  let crowdCheerTimer = 0;
+  const referee = {
+    x: 424,
+    y: COURT.netY,
+    whistleTimer: 0,
+    callText: ''
+  };
+
+  /* 三級 AI 戰術參數與破防設定 */
   const AI_LEVELS = [
     {
       name: '初級',
       badge: '🌱 AI:初級',
       cls: 'ai-easy',
-      speed: 3.10,
-      returnSpeed: 2.00,
-      hitReach: 50,
-      reactionDelay: 8,
-      outProb: 0.13,
-      netProb: 0.12,
-      predError: 10,
-      smashMissRate: 0.60,
-      aimOffset: 30,
-      scatter: 32,
+      speed: 3.25,
+      returnSpeed: 2.15,
+      hitReach: 52,
+      reactionDelay: 6,
+      baseErr: 0.14,
+      poiseMax: 100,
+      poiseDecay: 42,
+      poiseRecover: 10,
+      predError: 8,
       rushKitchen: false,
       canSmash: false,
       color: '#34d399',
       jersey: '#0d9488',
-      desc: '25% 機率失誤或出界，AI 跑位積極，來回對打更有趣！'
+      desc: '適合熟悉手感！變換球路即可快速打崩 AI 重心逼出高球！'
     },
     {
       name: '中級',
       badge: '⚔️ AI:中級',
       cls: 'ai-med',
-      speed: 3.80,
-      returnSpeed: 2.60,
-      hitReach: 56,
-      reactionDelay: 4,
-      outProb: 0.08,
-      netProb: 0.07,
-      predError: 5,
-      smashMissRate: 0.40,
-      aimOffset: 58,
-      scatter: 22,
+      speed: 3.95,
+      returnSpeed: 2.75,
+      hitReach: 58,
+      reactionDelay: 3,
+      baseErr: 0.05,
+      poiseMax: 100,
+      poiseDecay: 34,
+      poiseRecover: 22,
+      predError: 4,
       rushKitchen: true,
-      canSmash: false,
+      canSmash: true,
       color: '#60a5fa',
       jersey: '#dc2626',
-      desc: '15% 機率失誤或出界，需透過球路變換來突破 AI 防線！'
+      desc: '單調回擊對中級 AI 無效！請交替使用不同球種與角度破防！'
     },
     {
       name: '高級',
       badge: '👑 AI:高級',
       cls: 'ai-hard',
-      speed: 4.50,
-      returnSpeed: 3.30,
-      hitReach: 62,
+      speed: 4.65,
+      returnSpeed: 3.45,
+      hitReach: 64,
       reactionDelay: 1,
-      outProb: 0.06,
-      netProb: 0.04,
+      baseErr: 0.02,
+      poiseMax: 100,
+      poiseDecay: 28,
+      poiseRecover: 28,
       predError: 1,
-      smashMissRate: 0.25,
-      aimOffset: 82,
-      scatter: 12,
       rushKitchen: true,
       canSmash: true,
       color: '#f87171',
       jersey: '#7e22ce',
-      desc: '總失誤率僅 10%，需觀察 AI 動向搭配球路變換才能得分！'
+      desc: '大師級預判與網前壓迫！單調回擊將遭極限死角反擊！'
     }
   ];
   let aiDiffIdx = 0;
 
   const ai = {
-    x: 155, y: 42,
-    prevX: 155, prevY: 42,
-    radius: 16,
-    speed: AI_LEVELS[0].speed,
-    hitReach: AI_LEVELS[0].hitReach,
-    swingTimer: 0,
-    reactionTimer: 0,
-    perceivedX: 200,
-    perceivedY: 100,
-    speedPenalty: 1.0,
-    dizzyTimer: 0,
-    walkPhase: 0
+    x: 230, y: 54, prevX: 230, prevY: 54, radius: 16,
+    speed: AI_LEVELS[0].speed, hitReach: AI_LEVELS[0].hitReach,
+    swingTimer: 0, reactionTimer: 0, perceivedX: 230, perceivedY: 106,
+    speedPenalty: 1.0, dizzyTimer: 0, walkPhase: 0,
+    poise: 100, blinkTimer: 0
   };
 
   const player = {
-    x: 245, y: 518,
-    prevX: 245, prevY: 518,
-    radius: 16,
-    speed: 4.3,
-    hitReach: 84,
-    swingTimer: 0,
-    swingType: 'topspin',
-    bufferedShot: null,
-    bufferTimer: 0,
-    walkPhase: 0,
-    lastShotType: null,
-    lastShotSide: null
+    x: 230, y: 544, prevX: 230, prevY: 544, radius: 16,
+    baseSpeed: 4.4, hitReach: 86, swingTimer: 0, swingType: 'topspin',
+    bufferedShot: null, bufferTimer: 0, walkPhase: 0,
+    lastShotType: null, lastShotSide: null, sameTypeCount: 0,
+    variationStreak: 0, volleyInertiaTimer: 0, blinkTimer: 0
   };
 
   function setAiDifficulty(idx, announce = true) {
@@ -1019,40 +885,26 @@
     const cfg = AI_LEVELS[aiDiffIdx];
     ai.speed = cfg.speed;
     ai.hitReach = cfg.hitReach;
-
+    ai.poise = cfg.poiseMax;
     btnAiDiff.textContent = cfg.badge;
     btnAiDiff.className = `mini-btn ${cfg.cls}`;
-
-    diffOptBtns.forEach(b => {
-      b.classList.toggle('selected', Number(b.dataset.diff) === aiDiffIdx);
-    });
-
+    diffOptBtns.forEach(b => b.classList.toggle('selected', Number(b.dataset.diff) === aiDiffIdx));
     if (announce) {
-      showAnnouncement(`🤖 AI 強度切換為【${cfg.name}】`, cfg.desc, cfg.color, 2000);
+      showAnnouncement(`🤖 AI 強度切換為【${cfg.name}】`, cfg.desc, cfg.color, 1900);
     }
   }
 
-  btnAiDiff.addEventListener('click', () => {
-    setAiDifficulty((aiDiffIdx + 1) % AI_LEVELS.length, true);
-  });
+  btnAiDiff.addEventListener('click', () => setAiDifficulty((aiDiffIdx + 1) % AI_LEVELS.length, true));
+  diffOptBtns.forEach(btn => btn.addEventListener('click', () => setAiDifficulty(Number(btn.dataset.diff), false)));
 
-  diffOptBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      setAiDifficulty(Number(btn.dataset.diff), false);
-    });
-  });
-
-  // 整體遊戲速度維持 90% 思考節奏
-  const BASE_GAME_SPEED_90 = 0.90;
   const SPEED_MODES = [
-    { name: '慢速', scale: 0.76 * BASE_GAME_SPEED_90, icon: '🐢' },
-    { name: '90%節奏', scale: 0.92 * BASE_GAME_SPEED_90, icon: '⏱️' },
-    { name: '快速', scale: 1.08 * BASE_GAME_SPEED_90, icon: '🚀' }
+    { name: '慢速', scale: 0.82 },
+    { name: '標準節奏', scale: 1.00 },
+    { name: '快速', scale: 1.15 }
   ];
   let speedIdx = 1;
   let assistMove = true;
 
-  // 多點觸控搖桿與按鍵狀態
   const joyZone = document.getElementById('joystick-zone');
   const joyStick = document.getElementById('joystick-stick');
   let joyPointerId = null;
@@ -1061,30 +913,31 @@
 
   function forceResetJoystick() {
     joyPointerId = null;
-    joyTouchVec.x = 0;
-    joyTouchVec.y = 0;
+    joyTouchVec.x = 0; joyTouchVec.y = 0;
     joyStick.style.transform = `translate(0px, 0px)`;
   }
 
   btnAssist.addEventListener('click', () => {
     assistMove = !assistMove;
-    btnAssist.textContent = `🏃 輔助:${assistMove ? '開' : '關'}`;
+    btnAssist.textContent = assistMove ? '🏃 輔助:開' : '👟 手動:專家';
     btnAssist.classList.toggle('active', assistMove);
+    btnAssist.classList.toggle('manual-pro', !assistMove);
+    joyHintEl.textContent = assistMove ? '左手搖桿移動/控深' : '👟手動跑位(+12%極速)';
     forceResetJoystick();
     if (!assistMove) {
-      showAnnouncement('🕹️ 已關閉移動輔助（純手動控制）', '角色不會自動移動，請用左下角搖桿自行操控跑位！', '#38bdf8', 1600);
+      showAnnouncement('👟 已切換【純手動專家模式】', '獲得移動速度 +12%、救球範圍擴大與刁鑽角度加成！', '#38bdf8', 1800);
     } else {
-      showAnnouncement('🏃 已開啟自動移動輔助', '系統將自動控制你的角色移動至球的落點！', '#4ade80', 1600);
+      showAnnouncement('🏃 已開啟【智慧跑位輔助】', '系統自動導航至落點（含短球上網與廚房線煞車）！', '#4ade80', 1800);
     }
   });
 
   btnSpeed.addEventListener('click', () => {
     speedIdx = (speedIdx + 1) % SPEED_MODES.length;
     const m = SPEED_MODES[speedIdx];
-    btnSpeed.textContent = `${m.icon} ${m.name}`;
+    btnSpeed.textContent = `⏱️ ${m.name}`;
   });
 
-  // 互動教學狀態
+  // 互動 4 步驟教學模式
   let practiceMode = false;
   let practiceStep = 1;
   const PRACTICE_STEPS = [
@@ -1095,18 +948,18 @@
     },
     {
       step: 2,
-      title: '教學 2/4【🔥 上旋抽球】',
-      desc: '請按「🔥 上旋抽球」！觀察貼網平飛軌跡與落地加速前衝的火紅特效！'
+      title: '教學 2/4【🔥 上旋抽球 & 完美擊球】',
+      desc: '抓準球彈起時按「🔥 上旋抽球」！體驗貼網加速前衝與 ⚡PERFECT 擊球！'
     },
     {
       step: 3,
       title: '教學 3/4【❄️ 下旋切削】',
-      desc: '請按「❄️ 下旋切削」！觀察側曲刀光與落地瞬間急煞低彈的冰藍特效！'
+      desc: '請按「❄️ 下旋切削」！觀察冰藍側曲弧線與落地瞬間急煞低彈特效！'
     },
     {
       step: 4,
-      title: '教學 4/4【🌈 高吊 & 🪶 丁克】',
-      desc: '試著打出「🌈 高飛吊球」(超高拋物線) 或「🪶 網前丁克」(輕放廚房區) 完成訓練！'
+      title: '教學 4/4【🌈 高吊 & 🪶 丁克破防】',
+      desc: '打出「🌈 高飛吊球」或「🪶 網前丁克」清空 AI 穩定度並完成訓練！'
     }
   ];
 
@@ -1127,7 +980,7 @@
     updateScoreUI();
     updatePracticeBanner();
     setupServe();
-    showAnnouncement('🎓 進入互動教學模式', '跟著上方紫色橫幅體驗 4 種球路與規則！', '#c084fc', 2300);
+    showAnnouncement('🎓 進入 4 步驟互動教學', '跟著上方紫色橫幅體驗四大球種與破防系統！', '#c084fc', 2200);
   }
 
   function stopPracticeMode() {
@@ -1145,22 +998,20 @@
   let rallyHits = 0;
 
   const ball = {
-    x: 245, y: 500, z: 18,
-    vx: 0, vy: 0, vz: 0,
-    gravity: 0.25,
-    spin: 'flat',
-    spinAngle: 0,
-    curveX: 0,
-    lastHitter: null,
-    bounces: 0,
-    trail: [],
-    landing1: null,
-    landing2: null,
-    arcPoints: []
+    x: 230, y: 506, z: 18, maxZ: 18,
+    vx: 0, vy: 0, vz: 0, gravity: 0.25,
+    spin: 'flat', spinAngle: 0, curveX: 0,
+    lastHitter: null, bounces: 0, isPopup: false,
+    netCordTriggered: false,
+    trail: [], landing1: null, landing2: null, arcPoints: []
   };
 
   let particles = [];
+  let dustPuffs = [];
+  let shockwaves = [];
+  let swingArcs = [];
   let floatTexts = [];
+  let screenShake = 0;
   let announcement = { title: '', sub: '', color: '#fff', timer: 0 };
 
   function showAnnouncement(title, sub, color = '#facc15', duration = 1700) {
@@ -1171,21 +1022,38 @@
     floatTexts.push({ x, y, text, color, life: 1.0 });
   }
 
+  function spawnDust(x, y) {
+    if (Math.random() > 0.35) return;
+    dustPuffs.push({
+      x: x + (Math.random() - 0.5) * 10,
+      y: y + 6 + (Math.random() - 0.5) * 4,
+      r: 2.5 + Math.random() * 2.5,
+      life: 0.75
+    });
+  }
+
   function spawnBounceParticles(x, y, spinType) {
-    const color = spinType === 'topspin' ? '#f97316' :
-                  spinType === 'slice' ? '#38bdf8' :
-                  spinType === 'smash' ? '#ef4444' : '#facc15';
+    const color = spinType === 'topspin' ? '#f97316' : spinType === 'slice' ? '#38bdf8' : spinType === 'smash' ? '#ef4444' : '#facc15';
+    shockwaves.push({ x, y, r: 4, maxR: spinType === 'smash' ? 34 : 22, color, life: 1.0 });
     for (let i = 0; i < 12; i++) {
       const ang = Math.random() * Math.PI * 2;
-      const spd = 1.2 + Math.random() * 2.6;
-      particles.push({
-        x, y,
-        vx: Math.cos(ang) * spd,
-        vy: Math.sin(ang) * spd + (spinType === 'topspin' ? -1.4 : 0),
-        color,
-        size: 2.5 + Math.random() * 2.2,
-        life: 1.0
-      });
+      const spd = 1.3 + Math.random() * 2.7;
+      particles.push({ x, y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd, color, size: 2.2 + Math.random() * 2, life: 1.0 });
+    }
+  }
+
+  function spawnHitSparks(x, y, shotType, isPlayer, isPerfect = false) {
+    const color = isPerfect ? '#fde047' : (shotType === 'topspin' ? '#fb923c' : shotType === 'slice' ? '#38bdf8' : shotType === 'dink' ? '#34d399' : shotType === 'lob' ? '#c084fc' : '#f87171');
+    swingArcs.push({ x, y: y - 10, isPlayer, color, life: 1.0, r: isPerfect ? 28 : 24 });
+    if (shotType === 'smash') { screenShake = 7.5; crowdCheerTimer = Math.max(crowdCheerTimer, 45); }
+    else if (isPerfect) { screenShake = 4.0; crowdCheerTimer = Math.max(crowdCheerTimer, 30); }
+    else if (shotType === 'topspin') screenShake = 2.0;
+
+    const count = isPerfect ? 16 : 10;
+    for (let i = 0; i < count; i++) {
+      const ang = (isPlayer ? -Math.PI / 2 : Math.PI / 2) + (Math.random() - 0.5) * 1.7;
+      const spd = (isPerfect ? 2.8 : 2.0) + Math.random() * 3.2;
+      particles.push({ x, y: y - 12, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd, color, size: 2.2 + Math.random() * 2.2, life: 0.95 });
     }
   }
 
@@ -1193,13 +1061,11 @@
     const activeScore = server === 'player' ? pScore : aiScore;
     const isEven = (activeScore % 2 === 0);
     if (server === 'player') {
-      return isEven
-        ? { x1: COURT.left, y1: COURT.top, x2: COURT.centerX, y2: COURT.kitchenTop }
-        : { x1: COURT.centerX, y1: COURT.top, x2: COURT.right, y2: COURT.kitchenTop };
+      return isEven ? { x1: COURT.left, y1: COURT.top, x2: COURT.centerX, y2: COURT.kitchenTop }
+                    : { x1: COURT.centerX, y1: COURT.top, x2: COURT.right, y2: COURT.kitchenTop };
     } else {
-      return isEven
-        ? { x1: COURT.centerX, y1: COURT.kitchenBottom, x2: COURT.right, y2: COURT.bottom }
-        : { x1: COURT.left, y1: COURT.kitchenBottom, x2: COURT.centerX, y2: COURT.bottom };
+      return isEven ? { x1: COURT.centerX, y1: COURT.kitchenBottom, x2: COURT.right, y2: COURT.bottom }
+                    : { x1: COURT.left, y1: COURT.kitchenBottom, x2: COURT.centerX, y2: COURT.bottom };
     }
   }
 
@@ -1207,46 +1073,36 @@
     phase = 'serve';
     rallyHits = 0;
     ball.bounces = 0;
+    ball.isPopup = false;
+    ball.netCordTriggered = false;
     ball.trail = [];
-    ball.landing1 = null;
-    ball.landing2 = null;
-    ball.arcPoints = [];
-    player.bufferedShot = null;
-    player.bufferTimer = 0;
-    player.lastShotType = null;
-    player.lastShotSide = null;
-    ai.reactionTimer = 0;
-    ai.speedPenalty = 1.0;
-    ai.dizzyTimer = 0;
+    ball.maxZ = 18;
+    ball.landing1 = null; ball.landing2 = null; ball.arcPoints = [];
+    player.bufferedShot = null; player.bufferTimer = 0;
+    player.lastShotType = null; player.lastShotSide = null;
+    player.sameTypeCount = 0; player.variationStreak = 0;
+    player.volleyInertiaTimer = 0;
+    ai.reactionTimer = 0; ai.speedPenalty = 1.0; ai.dizzyTimer = 0;
+    ai.poise = AI_LEVELS[aiDiffIdx].poiseMax;
 
     const pEven = (pScore % 2 === 0);
     const aiEven = (aiScore % 2 === 0);
 
     if (server === 'player') {
-      player.x = pEven ? 255 : 145;
-      player.y = 518;
-      ai.x = pEven ? 140 : 260;
-      ai.y = 48;
-      ball.x = player.x - 10;
-      ball.y = player.y - 12;
-      ball.z = 18;
+      player.x = pEven ? 305 : 155; player.y = 544;
+      ai.x = pEven ? 155 : 305; ai.y = 58;
+      ball.x = player.x - 10; ball.y = player.y - 12; ball.z = 18;
       ball.vx = 0; ball.vy = 0; ball.vz = 0;
       ruleStatusEl.textContent = '🟢 輪到你發球：按右下任一鍵發往對角綠區';
       shotInfoEl.textContent = '待發球';
     } else {
-      ai.x = aiEven ? 145 : 255;
-      ai.y = 44;
-      player.x = aiEven ? 255 : 145;
-      player.y = 512;
-      ball.x = ai.x;
-      ball.y = ai.y + 12;
-      ball.z = 18;
+      ai.x = aiEven ? 155 : 305; ai.y = 56;
+      player.x = aiEven ? 305 : 155; player.y = 534;
+      ball.x = ai.x; ball.y = ai.y + 12; ball.z = 18;
       ball.vx = 0; ball.vy = 0; ball.vz = 0;
       ruleStatusEl.textContent = '🟡 對手發球：請等球落地彈跳一次後再回擊';
       shotInfoEl.textContent = '對手發球';
-      setTimeout(() => {
-        if (phase === 'serve' && server === 'ai') aiExecuteServe();
-      }, 950);
+      setTimeout(() => { if (phase === 'serve' && server === 'ai') aiExecuteServe(); }, 900);
     }
     updateScoreUI();
   }
@@ -1259,11 +1115,11 @@
   }
 
   function getSpinBouncePhysics(spinType) {
-    if (spinType === 'topspin') return { hMult: 1.24, vMult: 0.62, label: '🔥上旋前衝!' };
-    if (spinType === 'slice') return { hMult: 0.42, vMult: 0.44, label: '❄️切削急煞!' };
-    if (spinType === 'dink') return { hMult: 0.56, vMult: 0.56, label: '🪶丁克輕彈' };
-    if (spinType === 'lob') return { hMult: 0.78, vMult: 0.76, label: '🌈高吊深彈' };
-    if (spinType === 'smash') return { hMult: 1.22, vMult: 0.85, label: '💥重扣爆彈!' };
+    if (spinType === 'topspin') return { hMult: 1.25, vMult: 0.60, label: '🔥上旋衝刺!' };
+    if (spinType === 'slice') return { hMult: 0.40, vMult: 0.42, label: '❄️下旋急煞!' };
+    if (spinType === 'dink') return { hMult: 0.55, vMult: 0.55, label: '🪶丁克短球' };
+    if (spinType === 'lob' || spinType === 'popup') return { hMult: 0.78, vMult: 0.78, label: spinType === 'popup' ? '🎈冒高機會球!' : '🌈高吊深彈' };
+    if (spinType === 'smash') return { hMult: 1.26, vMult: 0.86, label: '💥強力重扣!' };
     return { hMult: 0.82, vMult: 0.68, label: '' };
   }
 
@@ -1274,12 +1130,12 @@
     const curve = ball.curveX;
     const spdScale = SPEED_MODES[speedIdx].scale;
 
-    ball.landing1 = null;
-    ball.landing2 = null;
-    ball.arcPoints = [];
+    ball.landing1 = null; ball.landing2 = null; ball.arcPoints = [];
+    ball.maxZ = sz;
     let simBounces = ball.bounces;
 
     for (let step = 0; step < 300; step++) {
+      if (sz > ball.maxZ) ball.maxZ = sz;
       if (step % 3 === 0 && simBounces === 0) {
         ball.arcPoints.push({ x: sx, y: sy, z: Math.max(0, sz) });
       }
@@ -1295,9 +1151,7 @@
         if (simBounces === 1) {
           ball.landing1 = { x: sx, y: sy, totalSteps: Math.max(1, step), curStep: 0 };
           const bp = getSpinBouncePhysics(ball.spin);
-          svx *= bp.hMult;
-          svy *= bp.hMult;
-          svz = Math.abs(svz) * bp.vMult;
+          svx *= bp.hMult; svy *= bp.hMult; svz = Math.abs(svz) * bp.vMult;
         } else if (simBounces === 2) {
           ball.landing2 = { x: sx, y: sy };
           break;
@@ -1306,112 +1160,125 @@
     }
   }
 
-  function evaluateTacticalAdvantage(shotType, targetX, targetY) {
+  /* 評估玩家戰術變化與削減 AI 重心穩定度 (Poise) */
+  function evaluateTacticalAdvantage(shotType, targetX, targetY, isPerfect) {
     const cfg = AI_LEVELS[aiDiffIdx];
-    const currentSide = targetX < COURT.centerX ? 'left' : 'right';
-    const variedType = (player.lastShotType !== null && player.lastShotType !== shotType);
-    const variedSide = (player.lastShotSide !== null && player.lastShotSide !== currentSide);
-    const isVaried = variedType || variedSide;
 
-    const aiAtNet = (ai.y > COURT.top + 82);
-    const aiAtBaseline = (ai.y < COURT.top + 68);
-    const hitOppositeX = Math.abs(targetX - ai.x) > 90;
-    const exploitedPosition =
-      (aiAtNet && shotType === 'lob') ||
-      (aiAtBaseline && (shotType === 'dink' || shotType === 'slice')) ||
-      hitOppositeX;
+    if (rallyHits === 0) {
+      // 發球不計入連續單調球種懲罰
+      ai.reactionTimer = cfg.reactionDelay;
+      ai.speedPenalty = 1.0;
+      if (ball.landing1) {
+        ai.perceivedX = ball.landing1.x;
+        ai.perceivedY = ball.landing1.y;
+      }
+      return;
+    }
+
+    const currentSide = targetX < COURT.centerX - 18 ? 'left' : (targetX > COURT.centerX + 18 ? 'right' : 'center');
+    const hasPrev = (player.lastShotType !== null);
+    const variedType = (!hasPrev || player.lastShotType !== shotType);
+    const variedSide = (!hasPrev || (player.lastShotSide !== currentSide && currentSide !== 'center'));
+    const dinkCross = (shotType === 'dink' && variedSide);
+    const isVaried = variedType || variedSide || dinkCross;
+
+    const aiAtNet = (ai.y > COURT.top + 88);
+    const aiAtBaseline = (ai.y < COURT.top + 72);
+    const hitAwayFromAI = Math.abs(targetX - ai.x) > 95;
+    const exploitedPos = (aiAtNet && shotType === 'lob') || (aiAtBaseline && (shotType === 'dink' || shotType === 'slice')) || hitAwayFromAI;
 
     player.lastShotType = shotType;
     player.lastShotSide = currentSide;
 
-    if (practiceMode) {
-      ai.reactionTimer = 1;
-      ai.speedPenalty = 1.0;
-      ai.perceivedX = ball.landing1 ? ball.landing1.x : COURT.centerX;
-      ai.perceivedY = ball.landing1 ? ball.landing1.y : COURT.top + 50;
-      return;
+    if (!hasPrev) {
+      player.sameTypeCount = 1;
+    } else if (!isVaried) {
+      player.sameTypeCount++;
+      player.variationStreak = 0;
+    } else {
+      player.sameTypeCount = 1;
+      player.variationStreak++;
     }
 
     let delay = cfg.reactionDelay;
     let spdMult = 1.0;
 
-    if (aiDiffIdx === 0) {
-      if (isVaried || exploitedPosition) {
+    if (isVaried || exploitedPos || isPerfect || shotType === 'smash') {
+      let dmg = cfg.poiseDecay * (isVaried ? 0.75 : 0.35);
+      if (exploitedPos) dmg += cfg.poiseDecay * 0.55;
+      if (isPerfect) dmg += 18;
+      if (shotType === 'smash') dmg += 38;
+      ai.poise = Math.max(0, ai.poise - dmg);
+
+      if (exploitedPos && isVaried) {
         delay += 4;
-        spdMult = 0.90;
-      }
-    } else if (aiDiffIdx === 1) {
-      if (isVaried) {
-        delay += 5;
         spdMult = 0.88;
-        addFloatText(ai.x, ai.y + 28, '❗ 球路變換奏效!', '#60a5fa');
-      } else {
-        spdMult = 1.05;
-      }
-    } else if (aiDiffIdx === 2) {
-      if (exploitedPosition && isVaried) {
-        delay += 6;
-        spdMult = 0.86;
-        addFloatText(ai.x, ai.y + 28, '⚡ 抓準AI動向+變換球路!', '#facc15');
-      } else if (exploitedPosition || variedType) {
+        addFloatText(ai.x, ai.y + 26, '🎯 戰術調動破防!', '#facc15');
+      } else if (isVaried && player.variationStreak >= 2) {
         delay += 3;
-        spdMult = 0.95;
-      } else {
-        delay = 0;
-        spdMult = 1.10;
+        spdMult = 0.92;
+      }
+    } else {
+      // 玩家單調重複回擊：AI 恢復重心穩定度
+      ai.poise = Math.min(cfg.poiseMax, ai.poise + cfg.poiseRecover);
+      if (aiDiffIdx >= 1 && player.sameTypeCount >= 2) {
+        delay = Math.max(0, cfg.reactionDelay - 2);
+        spdMult = 1.08;
+        addFloatText(ai.x, ai.y + 26, aiDiffIdx === 2 ? '⚡ 高級AI識破單調球路!' : '🛡️ AI看穿單調球路!', aiDiffIdx === 2 ? '#f87171' : '#60a5fa');
       }
     }
 
-    if (shotType === 'smash') {
-      delay += 4;
-      spdMult *= 0.88;
-    }
-
-    ai.reactionTimer = delay;
-    ai.speedPenalty = spdMult;
+    ai.reactionTimer = practiceMode ? 1 : delay;
+    ai.speedPenalty = practiceMode ? 1.0 : spdMult;
 
     if (ball.landing1) {
-      const errX = (Math.random() - 0.5) * 2 * cfg.predError;
-      const errY = (Math.random() - 0.5) * cfg.predError;
+      const errX = practiceMode ? 0 : (Math.random() - 0.5) * 2 * cfg.predError;
+      const errY = practiceMode ? 0 : (Math.random() - 0.5) * cfg.predError;
       ai.perceivedX = ball.landing1.x + errX;
       ai.perceivedY = ball.landing1.y + errY;
     }
   }
 
-  function launchBall(fromActor, shotType, targetX, targetY) {
+  function launchBall(fromActor, shotType, targetX, targetY, isPerfect = false) {
     const dx = targetX - ball.x;
     const dy = targetY - ball.y;
     ball.bounces = 0;
     ball.lastHitter = fromActor;
     ball.spin = shotType;
+    ball.isPopup = (shotType === 'popup');
+    ball.netCordTriggered = false;
     ball.trail = [];
 
-    let flightFrames = 56;
+    let flightFrames = 54;
     let gravity = 0.25;
     let curveX = 0;
 
     if (shotType === 'topspin') {
-      flightFrames = 44;
+      flightFrames = isPerfect ? 38 : 43;
       gravity = 0.28;
-      shotInfoEl.innerHTML = `<span style="color:#fb923c">🔥上旋平抽</span>`;
+      shotInfoEl.innerHTML = `<span style="color:#fb923c">${isPerfect ? '⚡完美上旋' : '🔥上旋抽球'}</span>`;
     } else if (shotType === 'slice') {
-      flightFrames = 56;
+      flightFrames = isPerfect ? 49 : 54;
       gravity = 0.17;
-      const curlDir = (ball.x > COURT.centerX) ? -1 : 1;
-      curveX = curlDir * 0.024;
-      shotInfoEl.innerHTML = `<span style="color:#38bdf8">❄️下旋切削</span>`;
+      const cDir = ball.x > COURT.centerX ? -1 : 1;
+      curveX = cDir * (isPerfect ? 0.030 : 0.024);
+      shotInfoEl.innerHTML = `<span style="color:#38bdf8">${isPerfect ? '⚡完美切削' : '❄️下旋切削'}</span>`;
     } else if (shotType === 'dink') {
-      flightFrames = 54;
+      flightFrames = 51;
       gravity = 0.22;
       shotInfoEl.innerHTML = `<span style="color:#34d399">🪶網前丁克</span>`;
     } else if (shotType === 'lob') {
-      flightFrames = 82;
+      flightFrames = 78;
       gravity = 0.30;
       shotInfoEl.innerHTML = `<span style="color:#c084fc">🌈高飛吊球</span>`;
+    } else if (shotType === 'popup') {
+      flightFrames = 64;
+      gravity = 0.32;
+      shotInfoEl.innerHTML = `<span style="color:#fde047">🎈受迫冒高球!</span>`;
     } else if (shotType === 'smash') {
-      flightFrames = 29;
-      gravity = 0.26;
-      shotInfoEl.innerHTML = `<span style="color:#f87171">💥強力扣殺</span>`;
+      flightFrames = isPerfect ? 23 : 26;
+      gravity = 0.27;
+      shotInfoEl.innerHTML = `<span style="color:#f87171">💥強力扣殺!</span>`;
     }
 
     ball.gravity = gravity;
@@ -1420,78 +1287,83 @@
     ball.vy = dy / flightFrames;
     ball.vz = 0.5 * gravity * flightFrames - (ball.z / flightFrames);
 
+    spawnHitSparks(ball.x, ball.y - ball.z * 0.4, shotType, fromActor === 'player', isPerfect);
     predictBallTrajectory();
     if (fromActor === 'player') {
-      evaluateTacticalAdvantage(shotType, targetX, targetY);
+      evaluateTacticalAdvantage(shotType, targetX, targetY, isPerfect);
     }
-    playSound(shotType);
+    playSound(isPerfect && shotType !== 'smash' ? 'perfect' : shotType);
   }
 
   function canPlayerSmash() {
     return phase === 'rally' &&
            rallyHits >= 2 &&
            ball.lastHitter === 'ai' &&
-           ball.z >= 42 &&
+           (ball.isPopup || ball.maxZ >= 38 || ball.z >= 35) &&
            ball.y > COURT.netY &&
-           ball.y < COURT.kitchenBottom + 65;
+           ball.y < COURT.kitchenBottom + 78;
   }
 
   function getManualInputVector() {
-    if (joyPointerId !== null) {
-      return { x: joyTouchVec.x, y: joyTouchVec.y };
-    }
+    if (joyPointerId !== null) return { x: joyTouchVec.x, y: joyTouchVec.y };
     let kx = 0, ky = 0;
     if (keys['arrowleft'] || keys['a']) kx -= 1;
     if (keys['arrowright'] || keys['d']) kx += 1;
     if (keys['arrowup'] || keys['w']) ky -= 1;
     if (keys['arrowdown'] || keys['s']) ky += 1;
     const len = Math.hypot(kx, ky);
-    if (len > 1) {
-      kx /= len;
-      ky /= len;
-    }
+    if (len > 1) { kx /= len; ky /= len; }
     return { x: kx, y: ky };
   }
 
   function attemptPlayerShot(requestedType) {
     if (phase === 'pointOver') return;
-
     const inputVec = getManualInputVector();
 
     if (phase === 'serve') {
       if (server !== 'player') return;
       const box = getServeTargetBox();
-      const tx = (box.x1 + box.x2) / 2 + (inputVec.x * 26);
-      const ty = (box.y1 + box.y2) / 2 + 12;
-      const clampedX = Math.max(box.x1 + 16, Math.min(box.x2 - 16, tx));
-      const clampedY = Math.max(box.y1 + 18, Math.min(box.y2 - 16, ty));
+      const tx = (box.x1 + box.x2) / 2 + (inputVec.x * 28);
+      const ty = (box.y1 + box.y2) / 2 + 10 - (inputVec.y * 12);
+      const clampedX = Math.max(box.x1 + 14, Math.min(box.x2 - 14, tx));
+      const clampedY = Math.max(box.y1 + 16, Math.min(box.y2 - 14, ty));
 
       phase = 'rally';
       rallyHits = 0;
       player.swingTimer = 14;
       player.swingType = requestedType;
-      launchBall('player', requestedType === 'dink' ? 'topspin' : requestedType, clampedX, clampedY);
+      launchBall('player', requestedType === 'dink' ? 'topspin' : requestedType, clampedX, clampedY, false);
       ruleStatusEl.textContent = '🟠 雙跳規則(1/2)：對手須等球落地才能擊球';
       return;
     }
 
     if (ball.lastHitter === 'player') return;
+    const activeReach = assistMove ? player.hitReach : player.hitReach + 10;
     const dist = Math.hypot(ball.x - player.x, ball.y - player.y);
 
     if (rallyHits < 2 && ball.bounces === 0 && ball.vy > 0) {
       player.bufferedShot = requestedType;
-      player.bufferTimer = 48;
-      addFloatText(player.x, player.y - 42, '⏳ 已預按! 落地自動揮拍', '#facc15');
+      player.bufferTimer = 46;
+      addFloatText(player.x, player.y - 40, '⏳ 已預按! 落地自動揮拍', '#facc15');
       return;
     }
 
-    if (dist > player.hitReach) {
-      if (dist < player.hitReach + 65 && ball.vy > 0) {
+    // 廚房區短球即將觸地前的微緩衝防呆
+    const inKitchen = (player.y <= COURT.kitchenBottom + 1 && player.y >= COURT.netY);
+    if (inKitchen && ball.bounces === 0 && ball.z <= 12 && ball.vz < 0 && dist <= activeReach) {
+      player.bufferedShot = requestedType;
+      player.bufferTimer = 18;
+      addFloatText(player.x, player.y - 40, '⏳ 待落地彈起擊球!', '#4ade80');
+      return;
+    }
+
+    if (dist > activeReach) {
+      if (dist < activeReach + 62 && ball.vy > 0) {
         player.bufferedShot = requestedType;
-        player.bufferTimer = 26;
+        player.bufferTimer = 25;
       } else {
         player.swingTimer = 10;
-        addFloatText(player.x, player.y - 36, '💨 距離太遠', '#94a3b8');
+        addFloatText(player.x, player.y - 34, '💨 距離太遠', '#94a3b8');
       }
       return;
     }
@@ -1506,76 +1378,81 @@
       return;
     }
 
-    const inKitchen = (player.y <= COURT.kitchenBottom + 4 && player.y >= COURT.netY);
+    const inKitchen = (player.y <= COURT.kitchenBottom + 1 && player.y >= COURT.netY);
     if (inKitchen && ball.bounces === 0) {
       playSound('whistle');
-      handleFault('player', '🚫 廚房區截擊違例！', '踩在橘紅色廚房區內時，不可直接打空中未落地的球！');
+      handleFault('player', '🚫 廚房區截擊違例 (NVZ)！', '站在橘紅色廚房區內時，不可直接打空中未落地的球！');
       return;
     }
 
-    if (assistMove) {
+    // 空中截擊後的慣性監測計時
+    if (ball.bounces === 0 && player.y <= COURT.kitchenBottom + 18) {
+      player.volleyInertiaTimer = 14;
+    }
+
+    const dist = Math.hypot(ball.x - player.x, ball.y - player.y);
+    // 判定是否為 ⚡PERFECT 最佳擊球點 (Sweet Spot)
+    const sweetZ = (ball.z >= 12 && ball.z <= 36);
+    const sweetDist = (dist >= 14 && dist <= (assistMove ? 56 : 66));
+    const isPerfect = (sweetZ && sweetDist) || canPlayerSmash();
+
+    if (assistMove && dist > 18) {
       const dx = ball.x - player.x;
       const dy = ball.y - player.y;
-      const dist = Math.hypot(dx, dy);
-      if (dist > 18) {
-        player.x += dx * 0.42;
-        player.y += dy * 0.35;
-        player.y = Math.max(COURT.netY + 14, Math.min(H - 18, player.y));
-      }
+      player.x += dx * 0.38;
+      // 避免輔助跨步把正在空中截擊的玩家推進廚房區違例
+      const safeMinY = (ball.bounces === 0) ? COURT.kitchenBottom + 3 : COURT.netY + 14;
+      player.y = Math.max(safeMinY, Math.min(H - 18, player.y + dy * 0.32));
     }
 
     let actualShot = requestedType;
-    if (requestedType === 'lob' && canPlayerSmash()) {
-      actualShot = 'smash';
-    }
+    if (requestedType === 'lob' && canPlayerSmash()) actualShot = 'smash';
 
     const inputVec = getManualInputVector();
+    const angleSpread = assistMove ? 126 : 138; // 純手動模式享有更犀利的邊線角度
     let aimX;
-    if (Math.abs(inputVec.x) >= 0.18) {
-      aimX = COURT.centerX + inputVec.x * 124;
-    } else {
-      aimX = (ai.x < COURT.centerX) ? COURT.centerX + 98 : COURT.centerX - 98;
-    }
-    aimX = Math.max(COURT.left + 14, Math.min(COURT.right - 14, aimX));
 
-    let aimY = COURT.top + 38;
-    if (actualShot === 'topspin') {
-      aimY = COURT.top + 32;
-    } else if (actualShot === 'slice') {
-      aimY = COURT.top + 92;
-    } else if (actualShot === 'dink') {
-      aimY = COURT.kitchenTop + 34;
-      if (Math.abs(inputVec.x) < 0.18) {
-        aimX = (ai.x < COURT.centerX) ? COURT.centerX + 92 : COURT.centerX - 92;
-      }
-    } else if (actualShot === 'lob') {
-      aimY = COURT.top + 20;
-    } else if (actualShot === 'smash') {
-      aimY = COURT.top + 58;
-      aimX = (ai.x < COURT.centerX) ? COURT.right - 16 : COURT.left + 16;
+    // 緊急撲救邊線球時自動輔助回擊對角空檔
+    const isEmergencyChase = (!assistMove && Math.abs(player.x - COURT.centerX) > 115 && Math.sign(inputVec.x) === Math.sign(player.x - COURT.centerX));
+    if (isEmergencyChase) {
+      aimX = (ai.x < COURT.centerX) ? COURT.centerX + 95 : COURT.centerX - 95;
+    } else if (Math.abs(inputVec.x) >= 0.16) {
+      aimX = COURT.centerX + inputVec.x * angleSpread;
+    } else {
+      aimX = (ai.x < COURT.centerX) ? COURT.centerX + 102 : COURT.centerX - 102;
+    }
+    aimX = Math.max(COURT.left + 12, Math.min(COURT.right - 12, aimX));
+
+    // 左手搖桿前後控制落點深度 (inputVec.y < 0 壓深底線，> 0 收短角度)
+    const depthShift = inputVec.y * 22;
+    let aimY = COURT.top + 35 + depthShift;
+    if (actualShot === 'topspin') aimY = COURT.top + 28 + depthShift;
+    else if (actualShot === 'slice') aimY = COURT.top + 86 + depthShift;
+    else if (actualShot === 'dink') aimY = Math.max(COURT.kitchenTop + 14, Math.min(COURT.netY - 16, COURT.kitchenTop + 32 + depthShift * 0.6));
+    else if (actualShot === 'lob') aimY = COURT.top + 18 + Math.max(0, depthShift * 0.5);
+    else if (actualShot === 'smash') {
+      aimY = COURT.top + 52;
+      aimX = (ai.x < COURT.centerX) ? COURT.right - 14 : COURT.left + 14;
     }
 
     rallyHits++;
     player.swingTimer = 15;
     player.swingType = actualShot;
     player.bufferedShot = null;
-    launchBall('player', actualShot, aimX, aimY);
+    launchBall('player', actualShot, aimX, aimY, isPerfect);
 
     const labelMap = {
-      topspin: ['🔥 上旋抽球!', '#fb923c'],
-      slice: ['❄️ 下旋切削!', '#38bdf8'],
-      dink: ['🪶 網前丁克!', '#34d399'],
+      topspin: [isPerfect ? '⚡ 完美上旋抽球!' : '🔥 上旋抽球!', isPerfect ? '#fde047' : '#fb923c'],
+      slice: [isPerfect ? '⚡ 完美下旋切削!' : '❄️ 下旋切削!', isPerfect ? '#fde047' : '#38bdf8'],
+      dink: [isPerfect ? '⚡ 完美貼網丁克!' : '🪶 網前丁克!', isPerfect ? '#fde047' : '#34d399'],
       lob: ['🌈 高飛吊球!', '#c084fc'],
-      smash: ['💥 強力扣殺!', '#f87171']
+      smash: ['💥 必殺重扣!', '#f87171']
     };
     const [txt, col] = labelMap[actualShot] || ['擊球!', '#fff'];
-    addFloatText(player.x, player.y - 32, txt, col);
+    addFloatText(player.x, player.y - 34, txt, col);
 
-    if (rallyHits === 1) {
-      ruleStatusEl.textContent = '🟠 雙跳規則(2/2)：發球方也須等球落地才能擊球';
-    } else {
-      ruleStatusEl.textContent = '🟢 雙跳完成：觀察 AI 動向並變換球路搶分！';
-    }
+    if (rallyHits === 1) ruleStatusEl.textContent = '🟠 雙跳規則(2/2)：發球方也須等球落地才能擊球';
+    else ruleStatusEl.textContent = '🟢 雙跳完成：變換球路削減 AI 穩定度條逼出高球！';
 
     checkPracticeProgress(actualShot);
   }
@@ -1585,31 +1462,31 @@
     if (practiceStep === 1 && rallyHits >= 2) {
       practiceStep = 2;
       updatePracticeBanner();
-      showAnnouncement('✅ 步驟 1 完成！', '請按「🔥 上旋抽球」體驗低平快與落地加速前衝！', '#4ade80', 2100);
+      showAnnouncement('✅ 步驟 1 完成！', '請按「🔥 上旋抽球」體驗貼網加速前衝！', '#4ade80', 2000);
     } else if (practiceStep === 2 && shotUsed === 'topspin') {
       practiceStep = 3;
       updatePracticeBanner();
-      showAnnouncement('🔥 漂亮的上旋抽球！', '下一步：請按「❄️ 下旋切削」體驗側曲與落地急煞！', '#fb923c', 2100);
+      showAnnouncement('🔥 漂亮的上旋抽球！', '下一步：請按「❄️ 下旋切削」體驗側曲與落地急煞！', '#fb923c', 2000);
     } else if (practiceStep === 3 && shotUsed === 'slice') {
       practiceStep = 4;
       updatePracticeBanner();
-      showAnnouncement('❄️ 犀利的下旋切削！', '最後一步：請按「🌈 高飛吊球」或「🪶 網前丁克」！', '#38bdf8', 2100);
-    } else if (practiceStep === 4 && (shotUsed === 'lob' || shotUsed === 'dink')) {
-      showAnnouncement('🎓 恭喜完成所有教學！', '你已掌握匹克球所有球路與規則，正式比賽開始！', '#facc15', 2600);
-      setTimeout(() => { if (practiceMode) stopPracticeMode(); }, 2500);
+      showAnnouncement('❄️ 犀利的下旋切削！', '最後一步：請按「🌈 高飛吊球」或「🪶 網前丁克」！', '#38bdf8', 2000);
+    } else if (practiceStep === 4 && (shotUsed === 'lob' || shotUsed === 'dink' || shotUsed === 'smash')) {
+      showAnnouncement('🎓 恭喜完成所有互動訓練！', '你已掌握所有球種與破防技巧，正式比賽開始！', '#facc15', 2500);
+      setTimeout(() => { if (practiceMode) stopPracticeMode(); }, 2400);
     }
   }
 
   function aiExecuteServe() {
     if (phase !== 'serve' || server !== 'ai') return;
     const box = getServeTargetBox();
-    const tx = (box.x1 + box.x2) / 2 + (Math.random() - 0.5) * 32;
-    const ty = (box.y1 + box.y2) / 2 + (aiDiffIdx === 2 ? 20 : 12);
+    const tx = (box.x1 + box.x2) / 2 + (Math.random() - 0.5) * 30;
+    const ty = (box.y1 + box.y2) / 2 + (aiDiffIdx === 2 ? 18 : 10);
     phase = 'rally';
     rallyHits = 0;
     ai.swingTimer = 14;
-    const serveShot = (aiDiffIdx === 2 && Math.random() < 0.4) ? 'slice' : 'topspin';
-    launchBall('ai', serveShot, tx, ty);
+    const serveShot = (aiDiffIdx === 2 && Math.random() < 0.45) ? 'slice' : 'topspin';
+    launchBall('ai', serveShot, tx, ty, false);
     ruleStatusEl.textContent = '🟠 雙跳規則(1/2)：請等球落地彈跳一次後再揮拍！';
   }
 
@@ -1633,45 +1510,38 @@
       let desiredY = targetY - 6;
 
       if (rallyHits < 2) {
-        desiredY = Math.max(COURT.top + 16, targetY - 16);
-      } else {
-        if (cfg.rushKitchen && targetY < COURT.kitchenTop && ball.spin !== 'lob') {
-          desiredY = Math.min(COURT.kitchenTop - 8, targetY - 6);
-        } else {
-          desiredY = targetY - 4;
-        }
+        desiredY = Math.max(COURT.top + 16, targetY - 14);
+      } else if (ball.spin === 'lob') {
+        desiredY = Math.max(COURT.top + 18, targetY - 22);
+      } else if (cfg.rushKitchen && targetY < COURT.kitchenTop) {
+        desiredY = Math.min(COURT.kitchenTop - 6, targetY - 4);
       }
 
       const dx = desiredX - ai.x;
       const dy = desiredY - ai.y;
       const d = Math.hypot(dx, dy);
       if (d > 2) {
-        let moveSpd = (practiceMode ? 3.9 : cfg.speed * ai.speedPenalty) * spdScale;
+        let moveSpd = (practiceMode ? 3.8 : cfg.speed * ai.speedPenalty) * spdScale;
         ai.x += (dx / d) * Math.min(moveSpd, d);
         ai.y += (dy / d) * Math.min(moveSpd, d);
+        spawnDust(ai.x, ai.y);
       }
 
       const distToBall = Math.hypot(ball.x - ai.x, ball.y - ai.y);
       const mustWaitBounce = (rallyHits < 2 && ball.bounces === 0);
       const aiInKitchen = (ai.y >= COURT.kitchenTop - 2);
       const kitchenBlock = (aiInKitchen && ball.bounces === 0);
-      const activeReach = practiceMode ? 72 : cfg.hitReach;
+      const activeReach = practiceMode ? 70 : cfg.hitReach;
 
-      if (!mustWaitBounce && !kitchenBlock && distToBall <= activeReach && ball.y < COURT.netY - 10 && ball.z < 55) {
-        if (ball.bounces >= 1 || ball.vy < 0) {
-          if (!practiceMode && ball.spin === 'smash' && Math.random() < cfg.smashMissRate) {
-            ai.swingTimer = 12;
-            ai.reactionTimer = 35;
-            ai.dizzyTimer = 45;
-            addFloatText(ai.x, ai.y + 24, '😵 扣殺太快漏接!', '#f87171');
-            return;
-          }
-          aiHitBall();
-        }
+      // 高吊球越頂保護：若玩家打出角度高吊球且尚未落地，AI 無法在廚房線隔空攔截超高球
+      const lobOverheadBypass = (ball.spin === 'lob' && ball.bounces === 0 && ball.z > 42 && Math.abs(ball.x - ai.x) > 26);
+
+      if (!mustWaitBounce && !kitchenBlock && !lobOverheadBypass && distToBall <= activeReach && ball.y < COURT.netY - 8 && ball.z < 56) {
+        if (ball.bounces >= 1 || ball.vy < 0) aiHitBall(distToBall);
       }
     } else {
       const homeX = COURT.centerX;
-      const homeY = (rallyHits >= 2 && cfg.rushKitchen) ? COURT.kitchenTop - 16 : COURT.top + 42;
+      const homeY = (rallyHits >= 2 && cfg.rushKitchen) ? COURT.kitchenTop - 14 : COURT.top + 42;
       const dx = homeX - ai.x;
       const dy = homeY - ai.y;
       const d = Math.hypot(dx, dy);
@@ -1682,7 +1552,7 @@
     }
   }
 
-  function aiHitBall() {
+  function aiHitBall(distToBall) {
     rallyHits++;
     ai.swingTimer = 14;
     const cfg = AI_LEVELS[aiDiffIdx];
@@ -1690,148 +1560,136 @@
     if (practiceMode) {
       const tx = (player.x > COURT.centerX) ? COURT.centerX + 45 : COURT.centerX - 45;
       const ty = COURT.bottom - 65;
-      launchBall('ai', 'topspin', tx, ty);
+      launchBall('ai', practiceStep === 4 ? 'popup' : 'topspin', tx, ty, false);
       addFloatText(ai.x, ai.y + 26, '🤖 教練餵球', '#93c5fd');
-      if (rallyHits === 1) ruleStatusEl.textContent = '🟠 雙跳規則(2/2)：現在輪到你等球落地後回擊！';
-      else ruleStatusEl.textContent = '🟢 雙跳已完成：請按下方按鈕體驗各種旋球與拋物線！';
       return;
     }
 
+    const isStretched = (distToBall > cfg.hitReach * 0.78);
+    const isBroken = (ai.poise <= 22);
+    const playerMonotonous = (player.sameTypeCount >= 2 && aiDiffIdx >= 1);
+
+    // 計算受迫失誤與救球冒高 (Pop-up)
+    const effectiveErr = playerMonotonous ? 0 : (cfg.baseErr + (isBroken ? 0.16 : 0) + (isStretched ? 0.08 : 0));
     const roll = Math.random();
-    if (roll < cfg.outProb) {
-      ai.dizzyTimer = 50;
-      addFloatText(ai.x, ai.y + 26, '💦 AI 擊球出界失誤!', '#fbbf24');
-      const outSide = Math.random() < 0.5;
-      const outX = outSide
-        ? (Math.random() < 0.5 ? COURT.left - 30 : COURT.right + 30)
-        : COURT.centerX + (Math.random() - 0.5) * 120;
-      const outY = outSide ? COURT.bottom - 65 : COURT.bottom + 34;
-      launchBall('ai', 'topspin', outX, outY);
-      return;
-    } else if (roll < cfg.outProb + cfg.netProb) {
-      ai.dizzyTimer = 50;
-      addFloatText(ai.x, ai.y + 26, '💦 AI 回球掛網失誤!', '#fbbf24');
-      ball.bounces = 0;
-      ball.lastHitter = 'ai';
-      ball.spin = 'dink';
-      ball.trail = [];
-      const framesToNet = 26;
-      ball.vx = (COURT.centerX + (Math.random() - 0.5) * 60 - ball.x) / framesToNet;
-      ball.vy = (COURT.netY - ball.y) / framesToNet;
-      ball.vz = 0.08;
-      ball.gravity = 0.25;
-      ball.curveX = 0;
-      predictBallTrajectory();
-      playSound('dink');
+
+    if (roll < effectiveErr) {
+      ai.dizzyTimer = 48;
+      ai.poise = cfg.poiseMax * 0.7;
+      if (Math.random() < 0.55) {
+        addFloatText(ai.x, ai.y + 26, '💦 AI 受迫擊球出界!', '#fbbf24');
+        const outX = (Math.random() < 0.5) ? COURT.left - 24 : COURT.right + 24;
+        launchBall('ai', 'topspin', outX, COURT.bottom - 55, false);
+      } else {
+        addFloatText(ai.x, ai.y + 26, '💦 AI 受迫回球掛網!', '#fbbf24');
+        ball.bounces = 0; ball.lastHitter = 'ai'; ball.spin = 'dink'; ball.trail = [];
+        ball.vx = 0; ball.vy = 0.85; ball.vz = 0.05; ball.gravity = 0.25; ball.curveX = 0;
+        playSound('dink');
+      }
       return;
     }
 
+    // 當 AI 重心穩定度見底或極限跨步救球時，高機率打出「🎈 受迫救球冒高 (Pop-up)」餵球給玩家扣殺！
+    const popupChance = (isBroken ? 0.65 : 0) + (isStretched ? 0.30 : 0);
+    if (!playerMonotonous && Math.random() < popupChance) {
+      ai.poise = cfg.poiseMax * 0.65;
+      ai.dizzyTimer = 35;
+      const px = COURT.centerX + (Math.random() - 0.5) * 90;
+      const py = COURT.kitchenBottom + 18;
+      launchBall('ai', 'popup', px, py, false);
+      addFloatText(ai.x, ai.y + 26, '🎈 AI 受迫冒高球！快扣殺！', '#fde047');
+      ruleStatusEl.textContent = '💥 絕佳機會：高吊鍵已變為「💥 強力扣殺」，快上前重扣！';
+      return;
+    }
+
+    // 高級 AI 識破單調球路反擊
     let chosen = 'topspin';
-    if (cfg.canSmash && rallyHits >= 2 && ball.z >= 45 && ai.y > COURT.top + 80) {
+    let isCounterAttack = false;
+    if (aiDiffIdx === 2 && playerMonotonous) {
+      isCounterAttack = true;
+      chosen = (player.y > COURT.bottom - 70) ? 'dink' : 'topspin';
+    } else if (cfg.canSmash && ball.spin === 'lob' && Math.abs(ball.x - ai.x) <= 26 && ai.y > COURT.top + 80) {
       chosen = 'smash';
-    } else if (aiDiffIdx === 0) {
-      const r = Math.random();
-      if (r < 0.50) chosen = 'topspin';
-      else if (r < 0.85) chosen = 'lob';
-      else chosen = 'dink';
-    } else if (aiDiffIdx === 1) {
-      if (ai.y >= COURT.kitchenTop - 15 && player.y <= COURT.kitchenBottom + 30) {
-        chosen = Math.random() < 0.65 ? 'dink' : 'lob';
-      } else {
-        const r = Math.random();
-        if (r < 0.42) chosen = 'topspin';
-        else if (r < 0.75) chosen = 'slice';
-        else if (r < 0.90) chosen = 'dink';
-        else chosen = 'lob';
-      }
     } else {
-      if (player.y > COURT.bottom - 65) {
-        chosen = Math.random() < 0.55 ? 'slice' : (Math.random() < 0.7 ? 'dink' : 'topspin');
-      } else if (player.y <= COURT.kitchenBottom + 28) {
-        chosen = Math.random() < 0.58 ? 'dink' : (Math.random() < 0.65 ? 'topspin' : 'lob');
-      } else {
-        const r = Math.random();
-        if (r < 0.52) chosen = 'topspin';
-        else if (r < 0.85) chosen = 'slice';
-        else chosen = 'dink';
-      }
+      const r = Math.random();
+      if (r < 0.44) chosen = 'topspin';
+      else if (r < 0.74) chosen = 'slice';
+      else if (r < 0.90) chosen = 'dink';
+      else chosen = 'lob';
     }
 
-    let tx = (player.x < COURT.centerX) ? COURT.centerX + cfg.aimOffset : COURT.centerX - cfg.aimOffset;
-    tx += (Math.random() - 0.5) * cfg.scatter;
-    tx = Math.max(COURT.left + 24, Math.min(COURT.right - 24, tx));
+    const offset = isCounterAttack ? 112 : (aiDiffIdx === 0 ? 45 : aiDiffIdx === 1 ? 75 : 95);
+    let tx = (player.x < COURT.centerX) ? COURT.centerX + offset : COURT.centerX - offset;
+    tx += (Math.random() - 0.5) * (aiDiffIdx === 0 ? 36 : 20);
+    tx = Math.max(COURT.left + 18, Math.min(COURT.right - 18, tx));
 
     let ty = COURT.bottom - 55;
-    if (chosen === 'dink') ty = COURT.kitchenBottom - 26;
-    else if (chosen === 'slice') ty = COURT.bottom - 95;
-    else if (chosen === 'lob') ty = (aiDiffIdx === 0) ? COURT.kitchenBottom + 22 : COURT.bottom - 35;
-    else if (chosen === 'smash') ty = COURT.bottom - 70;
+    if (chosen === 'dink') ty = COURT.kitchenBottom - 22;
+    else if (chosen === 'slice') ty = COURT.bottom - 88;
+    else if (chosen === 'lob') ty = COURT.bottom - 28;
+    else if (chosen === 'smash') ty = COURT.bottom - 65;
 
-    launchBall('ai', chosen, tx, ty);
+    launchBall('ai', chosen, tx, ty, isCounterAttack);
     const labelMap = {
-      topspin: ['🔥AI上旋', '#fb923c'],
+      topspin: [isCounterAttack ? '⚡AI極限反擊!' : '🔥AI上旋', isCounterAttack ? '#f87171' : '#fb923c'],
       slice: ['❄️AI切削', '#38bdf8'],
-      dink: ['🪶AI丁克', '#34d399'],
+      dink: [isCounterAttack ? '⚡AI死角短吊!' : '🪶AI丁克', '#34d399'],
       lob: ['🌈AI高吊', '#c084fc'],
       smash: ['💥AI重扣!', '#ef4444']
     };
     const [txt, col] = labelMap[chosen];
     addFloatText(ai.x, ai.y + 26, txt, col);
 
-    if (rallyHits === 1) ruleStatusEl.textContent = '🟠 雙跳規則(2/2)：請等這顆球落地彈跳一次後再擊球';
-    else ruleStatusEl.textContent = '🟢 雙跳完成：觀察 AI 動向並變換球路搶分！';
+    if (rallyHits === 1) ruleStatusEl.textContent = '🟠 雙跳規則(2/2)：請等球落地彈跳一次後再擊球';
+    else ruleStatusEl.textContent = '🟢 雙跳完成：善用不同球種與角度削減 AI 穩定度！';
   }
 
   function handleFault(faultActor, title, reason) {
     phase = 'pointOver';
     const winner = (faultActor === 'player') ? 'ai' : 'player';
+    crowdCheerTimer = 95;
+    referee.whistleTimer = 85;
+    referee.callText = title.includes('出界') ? '📢 OUT!' : title.includes('掛網') ? '📢 NET!' : title.includes('廚房') ? '📢 NVZ FAULT!' : '📢 POINT!';
 
     if (practiceMode) {
-      showAnnouncement(title, `${reason}（練習模式不扣分）`, '#facc15', 2000);
-      setTimeout(() => { server = 'player'; setupServe(); }, 2000);
+      showAnnouncement(title, `${reason}（練習模式不計失分）`, '#facc15', 1900);
+      setTimeout(() => { server = 'player'; setupServe(); }, 1900);
       return;
     }
 
     let scoreMsg = '';
     if (winner === server) {
-      if (winner === 'player') {
-        pScore++;
-        scoreMsg = `🎉 你是發球方，成功得分！目前比數 ${pScore} : ${aiScore}`;
-      } else {
-        aiScore++;
-        scoreMsg = `AI 發球得分！目前比數 ${pScore} : ${aiScore}`;
-      }
+      if (winner === 'player') { pScore++; scoreMsg = `🎉 發球方得分！比數 ${pScore} : ${aiScore}`; }
+      else { aiScore++; scoreMsg = `AI 發球得分！比數 ${pScore} : ${aiScore}`; }
     } else {
       server = winner;
-      scoreMsg = `🔄 奪回發球權 (Side-out)！現在換${winner === 'player' ? '你' : 'AI'}發球得分`;
+      scoreMsg = `🔄 奪回發球權 (Side-out)！換${winner === 'player' ? '你' : 'AI'}發球`;
     }
 
     updateScoreUI();
-    showAnnouncement(title, `${reason}\n${scoreMsg}`, winner === 'player' ? '#4ade80' : '#f87171', 2200);
+    showAnnouncement(title, `${reason}\n${scoreMsg}`, winner === 'player' ? '#4ade80' : '#f87171', 2100);
 
     setTimeout(() => {
       if (pScore >= 11 && pScore - aiScore >= 2) {
-        showAnnouncement(`🏆 恭喜擊敗【${AI_LEVELS[aiDiffIdx].name} AI】獲勝！`, `最終比數 ${pScore} : ${aiScore}，重新開局！`, '#facc15', 3000);
+        showAnnouncement(`🏆 恭喜擊敗【${AI_LEVELS[aiDiffIdx].name} AI】！`, `最終比數 ${pScore} : ${aiScore}`, '#facc15', 3000);
         pScore = 0; aiScore = 0; server = 'player';
       } else if (aiScore >= 11 && aiScore - pScore >= 2) {
-        showAnnouncement('💪 再接再厲！', `對手獲勝 (${pScore} : ${aiScore})，重新開局！`, '#38bdf8', 3000);
+        showAnnouncement('💪 再接再厲！', `對手獲勝 (${pScore} : ${aiScore})`, '#38bdf8', 3000);
         pScore = 0; aiScore = 0; server = 'player';
       }
       setupServe();
-    }, 2200);
+    }, 2100);
   }
 
   function checkFirstBounceValidity(bx, by) {
     const margin = 6;
     if (rallyHits === 0) {
       const box = getServeTargetBox();
-      const inBox = (bx >= box.x1 - margin && bx <= box.x2 + margin &&
-                     by >= box.y1 - margin && by <= box.y2 + margin);
+      const inBox = (bx >= box.x1 - margin && bx <= box.x2 + margin && by >= box.y1 - margin && by <= box.y2 + margin);
       if (!inBox) {
         playSound('whistle');
         const inKitchen = (by >= COURT.kitchenTop && by <= COURT.kitchenBottom);
-        const msg = inKitchen ? '發球落入廚房區違例！' : '發球未落入對角目標發球區！';
-        handleFault(ball.lastHitter, '🚫 發球違例', msg);
+        handleFault(ball.lastHitter, '🚫 發球違例', inKitchen ? '發球落入廚房區違例！' : '發球未落入對角目標發球區！');
         return false;
       }
       return true;
@@ -1840,18 +1698,10 @@
     const inX = (bx >= COURT.left - margin && bx <= COURT.right + margin);
     if (ball.lastHitter === 'player') {
       const inY = (by >= COURT.top - margin && by <= COURT.netY);
-      if (!inX || !inY) {
-        playSound('whistle');
-        handleFault('player', '🚫 擊球出界 (OUT)！', '你的球第一跳落在界外');
-        return false;
-      }
+      if (!inX || !inY) { playSound('whistle'); handleFault('player', '🚫 擊球出界 (OUT)！', '你的球第一跳落在界外'); return false; }
     } else {
       const inY = (by >= COURT.netY && by <= COURT.bottom + margin);
-      if (!inX || !inY) {
-        playSound('whistle');
-        handleFault('ai', '🟢 對手擊球出界 (OUT)！', 'AI 把球打出界外了！');
-        return false;
-      }
+      if (!inX || !inY) { playSound('whistle'); handleFault('ai', '🟢 對手擊球出界 (OUT)！', 'AI 把球打出界外了！'); return false; }
     }
     return true;
   }
@@ -1860,19 +1710,14 @@
     const rect = joyZone.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const maxR = 38;
+    const maxR = 36;
     let dx = clientX - cx;
     let dy = clientY - cy;
     const dist = Math.hypot(dx, dy);
-    if (dist > maxR) {
-      dx = (dx / dist) * maxR;
-      dy = (dy / dist) * maxR;
-    }
+    if (dist > maxR) { dx = (dx / dist) * maxR; dy = (dy / dist) * maxR; }
     joyStick.style.transform = `translate(${dx}px, ${dy}px)`;
-    const normX = dx / maxR;
-    const normY = dy / maxR;
-    joyTouchVec.x = Math.sign(normX) * Math.min(1, Math.abs(normX) * 1.25);
-    joyTouchVec.y = Math.sign(normY) * Math.min(1, Math.abs(normY) * 1.25);
+    joyTouchVec.x = Math.sign(dx / maxR) * Math.min(1, Math.abs(dx / maxR) * 1.22);
+    joyTouchVec.y = Math.sign(dy / maxR) * Math.min(1, Math.abs(dy / maxR) * 1.22);
   }
 
   function resetJoy(e) {
@@ -1880,26 +1725,12 @@
     forceResetJoystick();
   }
 
-  joyZone.addEventListener('pointerdown', e => {
-    e.preventDefault();
-    joyPointerId = e.pointerId;
-    try { joyZone.setPointerCapture(e.pointerId); } catch (err) {}
-    handleJoyMove(e.clientX, e.clientY);
-  });
-  joyZone.addEventListener('pointermove', e => {
-    if (e.pointerId === joyPointerId) {
-      e.preventDefault();
-      handleJoyMove(e.clientX, e.clientY);
-    }
-  });
+  joyZone.addEventListener('pointerdown', e => { e.preventDefault(); joyPointerId = e.pointerId; try { joyZone.setPointerCapture(e.pointerId); } catch(err){} handleJoyMove(e.clientX, e.clientY); });
+  joyZone.addEventListener('pointermove', e => { if (e.pointerId === joyPointerId) { e.preventDefault(); handleJoyMove(e.clientX, e.clientY); } });
   joyZone.addEventListener('pointerup', resetJoy);
   joyZone.addEventListener('pointercancel', resetJoy);
   window.addEventListener('pointerup', resetJoy);
   window.addEventListener('pointercancel', resetJoy);
-  window.addEventListener('blur', () => {
-    forceResetJoystick();
-    Object.keys(keys).forEach(k => keys[k] = false);
-  });
 
   window.addEventListener('keydown', e => {
     keys[e.key.toLowerCase()] = true;
@@ -1912,12 +1743,7 @@
 
   shotBtns.forEach(btn => {
     const shotType = btn.dataset.shot;
-    btn.addEventListener('pointerdown', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      btn.classList.add('pressed');
-      attemptPlayerShot(shotType);
-    });
+    btn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); btn.classList.add('pressed'); attemptPlayerShot(shotType); });
     btn.addEventListener('pointerup', () => btn.classList.remove('pressed'));
     btn.addEventListener('pointercancel', () => btn.classList.remove('pressed'));
     btn.addEventListener('pointerleave', () => btn.classList.remove('pressed'));
@@ -1926,72 +1752,88 @@
   function update() {
     const spdScale = SPEED_MODES[speedIdx].scale;
 
-    player.prevX = player.x;
-    player.prevY = player.y;
-    ai.prevX = ai.x;
-    ai.prevY = ai.y;
+    player.prevX = player.x; player.prevY = player.y;
+    ai.prevX = ai.x; ai.prevY = ai.y;
 
     const manualVec = getManualInputVector();
     const isManualMoving = Math.hypot(manualVec.x, manualVec.y) > 0.05;
+    // 純手動模式享有 +12% 速度加成
+    const activePlayerSpeed = (assistMove ? player.baseSpeed : player.baseSpeed * 1.12) * spdScale;
 
     if (phase === 'rally') {
       if (!assistMove) {
         if (isManualMoving) {
-          player.x += manualVec.x * player.speed * BASE_GAME_SPEED_90;
-          player.y += manualVec.y * player.speed * BASE_GAME_SPEED_90;
+          player.x += manualVec.x * activePlayerSpeed;
+          player.y += manualVec.y * activePlayerSpeed;
         }
       } else {
         if (isManualMoving) {
-          player.x += manualVec.x * player.speed * BASE_GAME_SPEED_90;
-          player.y += manualVec.y * player.speed * BASE_GAME_SPEED_90;
+          player.x += manualVec.x * activePlayerSpeed;
+          player.y += manualVec.y * activePlayerSpeed;
         } else if (ball.lastHitter === 'ai' && ball.landing1) {
           let targetX = ball.landing1.x;
-          let targetY = ball.landing1.y + 24;
-          if (ball.spin === 'slice') targetY = ball.landing1.y + 10;
-          else if (ball.spin === 'topspin') targetY = ball.landing1.y + 34;
-          targetY = Math.max(COURT.kitchenBottom + 6, Math.min(H - 22, targetY));
-
+          let targetY = ball.landing1.y + 22;
+          // 智慧輔助：若球落在廚房區內且已彈起（或即將落地），自動帶玩家進入廚房區救短球；否則停在廚房線外防截擊違例
+          const isShortInKitchen = (ball.landing1.y <= COURT.kitchenBottom);
+          if (isShortInKitchen && (ball.bounces >= 1 || ball.z < 18)) {
+            targetY = Math.max(COURT.netY + 20, ball.landing1.y + 12);
+          } else {
+            targetY = Math.max(COURT.kitchenBottom + 6, Math.min(H - 22, targetY));
+          }
           const dx = targetX - player.x;
           const dy = targetY - player.y;
           const d = Math.hypot(dx, dy);
-          if (d > 6) {
-            player.x += (dx / d) * (player.speed * 0.88 * BASE_GAME_SPEED_90);
-            player.y += (dy / d) * (player.speed * 0.88 * BASE_GAME_SPEED_90);
+          if (d > 5) {
+            player.x += (dx / d) * (activePlayerSpeed * 0.88);
+            player.y += (dy / d) * (activePlayerSpeed * 0.88);
           }
         }
       }
-      player.x = Math.max(26, Math.min(W - 26, player.x));
-      player.y = Math.max(COURT.netY + 14, Math.min(H - 20, player.y));
+      player.x = Math.max(46, Math.min(W - 46, player.x));
+      player.y = Math.max(COURT.netY + 14, Math.min(H - 18, player.y));
+
+      // 截擊後慣性踩入廚房區違例檢查
+      if (player.volleyInertiaTimer > 0) {
+        player.volleyInertiaTimer--;
+        if (player.y <= COURT.kitchenBottom + 1 && isManualMoving && manualVec.y < -0.1) {
+          player.volleyInertiaTimer = 0;
+          playSound('whistle');
+          handleFault('player', '🚫 截擊慣性踩入廚房區！', '空中截擊後身體因慣性踏入廚房區違例！');
+          return;
+        }
+      }
     } else if (phase === 'serve' && server === 'player' && isManualMoving) {
-      player.x = Math.max(COURT.left + 10, Math.min(COURT.right - 10, player.x + manualVec.x * player.speed * 0.6));
+      player.x = Math.max(COURT.left + 12, Math.min(COURT.right - 12, player.x + manualVec.x * activePlayerSpeed * 0.6));
       ball.x = player.x - 10;
     }
 
     const pMoveDist = Math.hypot(player.x - player.prevX, player.y - player.prevY);
-    if (pMoveDist > 0.2) player.walkPhase += pMoveDist * 0.25;
-    else player.walkPhase *= 0.8;
+    if (pMoveDist > 0.2) {
+      player.walkPhase += pMoveDist * 0.25;
+      spawnDust(player.x, player.y);
+    } else {
+      player.walkPhase *= 0.8;
+    }
 
+    const activeReach = assistMove ? player.hitReach : player.hitReach + 10;
     if (player.bufferedShot && player.bufferTimer > 0) {
       player.bufferTimer--;
       const dist = Math.hypot(ball.x - player.x, ball.y - player.y);
-      const canHitRule = (rallyHits >= 2 || ball.bounces >= 1);
-      if (canHitRule && dist <= player.hitReach && ball.lastHitter === 'ai') {
+      if ((rallyHits >= 2 || ball.bounces >= 1) && dist <= activeReach && ball.lastHitter === 'ai') {
         executePlayerRallyHit(player.bufferedShot);
       }
-    } else {
-      player.bufferedShot = null;
-    }
+    } else { player.bufferedShot = null; }
 
     const distToPlayer = Math.hypot(ball.x - player.x, ball.y - player.y);
     const playerCanHitNow = (phase === 'serve' && server === 'player') ||
-      (phase === 'rally' && ball.lastHitter === 'ai' && distToPlayer <= player.hitReach && (rallyHits >= 2 || ball.bounces >= 1));
+      (phase === 'rally' && ball.lastHitter === 'ai' && distToPlayer <= activeReach && (rallyHits >= 2 || ball.bounces >= 1));
 
     shotBtns.forEach(b => b.classList.toggle('ready-glow', playerCanHitNow));
 
     if (canPlayerSmash()) {
       btnLob.classList.add('smash-mode');
       lobTitle.textContent = '💥 強力扣殺!';
-      lobSub.textContent = '高球機會・直線重扣!';
+      lobSub.textContent = '高球機會・一擊必殺!';
     } else {
       btnLob.classList.remove('smash-mode');
       lobTitle.textContent = '🌈 高飛吊球';
@@ -2005,18 +1847,29 @@
       ball.z += ball.vz * spdScale;
       ball.vx += ball.curveX * spdScale;
       ball.vz -= ball.gravity * spdScale;
-      ball.spinAngle += (ball.spin === 'topspin' ? 0.35 : ball.spin === 'slice' ? -0.32 : 0.15) * BASE_GAME_SPEED_90;
+      ball.spinAngle += (ball.spin === 'topspin' ? 0.35 : ball.spin === 'slice' ? -0.32 : 0.15);
 
+      if (ball.z > ball.maxZ) ball.maxZ = ball.z;
       if (ball.landing1) ball.landing1.curStep++;
 
       ball.trail.push({ x: ball.x, y: ball.y, z: ball.z, spin: ball.spin });
       if (ball.trail.length > 16) ball.trail.shift();
 
+      // 過網判定：包含「🥅 擦網幸運球 (Net Cord)」物理
       if ((prevY > COURT.netY && ball.y <= COURT.netY) || (prevY < COURT.netY && ball.y >= COURT.netY)) {
-        if (ball.z < 12) {
+        if (ball.z < 10.5) {
           playSound('whistle');
-          handleFault(ball.lastHitter, '🥅 擊球掛網 (NET)！', `${ball.lastHitter === 'player' ? '你' : 'AI 對手'}的球失誤掛網了！`);
+          handleFault(ball.lastHitter, '🥅 擊球掛網 (NET)！', `${ball.lastHitter === 'player' ? '你' : 'AI'}的球掛網了！`);
           return;
+        } else if (ball.z < 13.5 && !ball.netCordTriggered && rallyHits >= 1) {
+          ball.netCordTriggered = true;
+          ball.vx *= 0.55;
+          ball.vy *= 0.48;
+          ball.vz = 1.6;
+          playSound('bounce');
+          shockwaves.push({ x: ball.x, y: COURT.netY, r: 3, maxR: 18, color: '#ffffff', life: 1.0 });
+          addFloatText(ball.x, COURT.netY - 16, '🥅 擦網幸運球 (Net Cord)!', '#fde047');
+          predictBallTrajectory();
         }
       }
 
@@ -2029,24 +1882,13 @@
         if (ball.bounces === 1) {
           if (!checkFirstBounceValidity(ball.x, ball.y)) return;
           const bp = getSpinBouncePhysics(ball.spin);
-          ball.vx *= bp.hMult;
-          ball.vy *= bp.hMult;
-          ball.vz = Math.abs(ball.vz) * bp.vMult;
+          ball.vx *= bp.hMult; ball.vy *= bp.hMult; ball.vz = Math.abs(ball.vz) * bp.vMult;
           ball.curveX *= 0.3;
-
-          if (bp.label) {
-            const col = ball.spin === 'topspin' ? '#fb923c' :
-                        ball.spin === 'slice' ? '#38bdf8' : '#e2e8f0';
-            addFloatText(ball.x, ball.y - 14, bp.label, col);
-          }
+          if (bp.label) addFloatText(ball.x, ball.y - 14, bp.label, ball.spin === 'topspin' ? '#fb923c' : ball.spin === 'popup' ? '#fde047' : '#38bdf8');
         } else if (ball.bounces >= 2) {
           playSound('whistle');
           const faultWho = (ball.lastHitter === 'player') ? 'ai' : 'player';
-          handleFault(
-            faultWho,
-            faultWho === 'player' ? '⚠️ 球落地兩次！' : '🎯 漂亮致勝球 (Winner)！',
-            faultWho === 'player' ? '未能在第 2 跳前救起' : 'AI 追不到你的好球，球落地兩次！'
-          );
+          handleFault(faultWho, faultWho === 'player' ? '⚠️ 球落地兩次！' : '🎯 漂亮致勝球 (Winner)！', faultWho === 'player' ? '未能在第 2 跳前救起' : 'AI 追不到你的好球！');
           return;
         }
       }
@@ -2055,11 +1897,7 @@
         if (ball.bounces === 0) checkFirstBounceValidity(ball.x, ball.y);
         else {
           const faultWho = (ball.lastHitter === 'player') ? 'ai' : 'player';
-          handleFault(
-            faultWho,
-            faultWho === 'ai' ? '🎯 漂亮穿越致勝球！' : '⚠️ 球彈出界外！',
-            `${faultWho === 'player' ? '你' : 'AI 對手'}未能救起這顆好球！`
-          );
+          handleFault(faultWho, faultWho === 'ai' ? '🎯 穿越致勝球！' : '⚠️ 球彈出界外！', `${faultWho === 'player' ? '你' : 'AI'}未能救起！`);
         }
         return;
       }
@@ -2074,15 +1912,34 @@
     if (player.swingTimer > 0) player.swingTimer--;
     if (ai.swingTimer > 0) ai.swingTimer--;
     if (announcement.timer > 0) announcement.timer -= 16.6;
+    if (screenShake > 0) screenShake = Math.max(0, screenShake - 0.7);
+    if (crowdCheerTimer > 0) crowdCheerTimer--;
+    if (referee.whistleTimer > 0) referee.whistleTimer--;
 
+    // 眨眼計時
+    if (Math.random() < 0.008 && player.blinkTimer === 0) player.blinkTimer = 8;
+    if (Math.random() < 0.008 && ai.blinkTimer === 0) ai.blinkTimer = 8;
+    if (player.blinkTimer > 0) player.blinkTimer--;
+    if (ai.blinkTimer > 0) ai.blinkTimer--;
+
+    for (let i = dustPuffs.length - 1; i >= 0; i--) {
+      const d = dustPuffs[i]; d.r += 0.15; d.life -= 0.04;
+      if (d.life <= 0) dustPuffs.splice(i, 1);
+    }
     for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.x += p.vx; p.y += p.vy; p.life -= 0.04;
+      const p = particles[i]; p.x += p.vx; p.y += p.vy; p.life -= 0.04;
       if (p.life <= 0) particles.splice(i, 1);
     }
+    for (let i = shockwaves.length - 1; i >= 0; i--) {
+      const sw = shockwaves[i]; sw.r += (sw.maxR - sw.r) * 0.2; sw.life -= 0.05;
+      if (sw.life <= 0) shockwaves.splice(i, 1);
+    }
+    for (let i = swingArcs.length - 1; i >= 0; i--) {
+      const sa = swingArcs[i]; sa.life -= 0.09;
+      if (sa.life <= 0) swingArcs.splice(i, 1);
+    }
     for (let i = floatTexts.length - 1; i >= 0; i--) {
-      const ft = floatTexts[i];
-      ft.y -= 0.7; ft.life -= 0.022;
+      const ft = floatTexts[i]; ft.y -= 0.7; ft.life -= 0.022;
       if (ft.life <= 0) floatTexts.splice(i, 1);
     }
   }
@@ -2090,91 +1947,199 @@
   function draw() {
     const rect = canvas.parentElement.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const targetW = Math.max(1, Math.round(rect.width * dpr));
-    const targetH = Math.max(1, Math.round(rect.height * dpr));
+    const targetW = Math.round(rect.width * dpr);
+    const targetH = Math.round(rect.height * dpr);
     if (canvas.width !== targetW || canvas.height !== targetH) {
-      canvas.width = targetW;
-      canvas.height = targetH;
+      canvas.width = targetW; canvas.height = targetH;
     }
 
     ctx.save();
-    // 先將整個全螢幕畫布填滿球場外圍深藍底色，確保全螢幕無黑邊
-    ctx.fillStyle = '#0f2942';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 定義包含 AI 頭頂標籤、玩家底部與左右揮拍範圍的完整安全邊界盒
-    const SAFE_LEFT = -22;
-    const SAFE_TOP = -28;
-    const SAFE_W = W + 44; // 444
-    const SAFE_H = H + 48; // 608
-
-    // 預留 96% 安全邊距，確保場地四周圍欄與所有物件 100% 在螢幕內絕不裁切
-    const scale = Math.min(canvas.width / SAFE_W, canvas.height / SAFE_H) * 0.96;
-    const offsetX = (canvas.width - SAFE_W * scale) / 2 - SAFE_LEFT * scale;
-    const offsetY = (canvas.height - SAFE_H * scale) / 2 - SAFE_TOP * scale;
+    const scale = Math.min(canvas.width / W, canvas.height / H);
+    const shakeX = screenShake > 0 ? (Math.random() - 0.5) * screenShake * 1.6 : 0;
+    const shakeY = screenShake > 0 ? (Math.random() - 0.5) * screenShake * 1.6 : 0;
+    const offsetX = (canvas.width - W * scale) / 2 + shakeX * scale;
+    const offsetY = (canvas.height - H * scale) / 2 + shakeY * scale;
     ctx.translate(offsetX, offsetY);
     ctx.scale(scale, scale);
 
-    // 繪製完整可視的球場外圍邊界框，讓四角與邊緣清晰呈現在螢幕內
-    ctx.fillStyle = '#163554';
-    ctx.strokeStyle = 'rgba(148, 163, 184, 0.45)';
-    ctx.lineWidth = 2.5;
+    // 1. 陽光戶外公園草地與周邊景觀 (Bright Sunny Outdoor Park)
+    const grassGrad = ctx.createRadialGradient(W / 2, H / 2, 60, W / 2, H / 2, 420);
+    grassGrad.addColorStop(0, '#4ade80');
+    grassGrad.addColorStop(0.6, '#22c55e');
+    grassGrad.addColorStop(1, '#15803d');
+    ctx.fillStyle = grassGrad;
+    ctx.fillRect(-60, -60, W + 120, H + 120);
+
+    // 陽光草坪條紋 (Lawn Mower Stripes)
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+    for (let gy = -40; gy < H + 40; gy += 36) {
+      ctx.fillRect(-50, gy, W + 100, 18);
+    }
+
+    // 戶外公園石板步道與園藝花圃裝飾
+    ctx.fillStyle = '#d6d3d1';
+    ctx.fillRect(0, 0, 38, H);
+    ctx.fillRect(W - 38, 0, 38, H);
+    ctx.strokeStyle = '#a8a29e';
+    ctx.lineWidth = 1;
+    for (let py = 10; py < H; py += 28) {
+      ctx.beginPath();
+      ctx.moveTo(0, py); ctx.lineTo(38, py);
+      ctx.moveTo(W - 38, py); ctx.lineTo(W, py);
+      ctx.stroke();
+    }
+
+    // 2. 專業戶外匹克球場外圍緩衝區 (亞麻薄荷綠 Acrylic Surround)
+    const padX = 36, padY = 44;
+    const surroundX = COURT.left - padX;
+    const surroundY = COURT.top - padY;
+    const surroundW = (COURT.right - COURT.left) + padX * 2;
+    const surroundH = (COURT.bottom - COURT.top) + padY * 2;
+
+    // 球場地基立體陰影
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
     ctx.beginPath();
-    ctx.roundRect(-12, -20, W + 24, H + 32, 14);
+    ctx.roundRect(surroundX + 4, surroundY + 5, surroundW, surroundH, 12);
+    ctx.fill();
+
+    const surroundGrad = ctx.createLinearGradient(surroundX, surroundY, surroundX, surroundY + surroundH);
+    surroundGrad.addColorStop(0, '#10b981');
+    surroundGrad.addColorStop(0.5, '#059669');
+    surroundGrad.addColorStop(1, '#047857');
+    ctx.fillStyle = surroundGrad;
+    ctx.strokeStyle = '#ecfdf5';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(surroundX, surroundY, surroundW, surroundH, 10);
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = '#1d4ed8';
-    ctx.fillRect(COURT.left, COURT.top, COURT.right - COURT.left, COURT.bottom - COURT.top);
-
-    const playerInKitchen = (player.y <= COURT.kitchenBottom + 4 && player.y >= COURT.netY);
-    ctx.fillStyle = playerInKitchen ? '#dc2626' : '#c2410c';
-    ctx.fillRect(COURT.left, COURT.kitchenTop, COURT.right - COURT.left, COURT.kitchenBottom - COURT.kitchenTop);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.2)';
-    ctx.font = 'bold 11px sans-serif';
+    // 頂部戶外錦標賽橫幅與大型記分板
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(COURT.centerX - 88, 3, 176, 17, 5);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#fde047';
+    ctx.font = 'bold 10px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('🚫 廚房區 (非截擊區 NVZ)', COURT.centerX, COURT.kitchenTop + 38);
-    ctx.fillText('🚫 廚房區 (禁打空中未落地球)', COURT.centerX, COURT.kitchenBottom - 28);
+    ctx.fillText('☀️ SUNNY PICKLEBALL OPEN ☀️', COURT.centerX, 15);
+
+    // 球場四周綠植灌木叢 (Lush Bushes)
+    const bushes = [
+      [48, 18, 12], [62, 14, 9], [398, 18, 12], [412, 14, 9],
+      [48, H - 16, 12], [62, H - 12, 9], [398, H - 16, 12], [412, H - 12, 9]
+    ];
+    bushes.forEach(([bx, by, br]) => {
+      ctx.fillStyle = 'rgba(0,0,0,0.2)';
+      ctx.beginPath(); ctx.arc(bx + 2, by + 2, br, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#4ade80';
+      ctx.beginPath(); ctx.arc(bx - 2, by - 2, br * 0.65, 0, Math.PI * 2); ctx.fill();
+    });
+
+    // 3. 主賽場明亮加州天藍漸層 (Bright Sky Blue Play Area)
+    const courtW = COURT.right - COURT.left;
+    const courtH = COURT.bottom - COURT.top;
+    const courtGrad = ctx.createLinearGradient(COURT.left, COURT.top, COURT.right, COURT.bottom);
+    courtGrad.addColorStop(0, '#0284c7');
+    courtGrad.addColorStop(0.5, '#0ea5e9');
+    courtGrad.addColorStop(1, '#0284c7');
+    ctx.fillStyle = courtGrad;
+    ctx.fillRect(COURT.left, COURT.top, courtW, courtH);
+
+    // 細緻陽光壓克力球場紋理
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    for (let cy = COURT.top; cy < COURT.bottom; cy += 12) {
+      ctx.fillRect(COURT.left, cy, courtW, 6);
+    }
+
+    // 4. 廚房區 (NVZ) 明亮陽光珊瑚橘塗層與斜紋警示
+    const playerInKitchen = (player.y <= COURT.kitchenBottom + 1 && player.y >= COURT.netY);
+    const kH = COURT.kitchenBottom - COURT.kitchenTop;
+    const kGrad = ctx.createLinearGradient(COURT.left, COURT.kitchenTop, COURT.left, COURT.kitchenBottom);
+    if (playerInKitchen && ball.bounces === 0 && phase === 'rally') {
+      kGrad.addColorStop(0, '#ef4444');
+      kGrad.addColorStop(0.5, '#dc2626');
+      kGrad.addColorStop(1, '#ef4444');
+    } else {
+      kGrad.addColorStop(0, '#fb923c');
+      kGrad.addColorStop(0.5, '#f97316');
+      kGrad.addColorStop(1, '#fb923c');
+    }
+    ctx.fillStyle = kGrad;
+    ctx.fillRect(COURT.left, COURT.kitchenTop, courtW, kH);
+
+    ctx.save();
+    ctx.beginPath(); ctx.rect(COURT.left, COURT.kitchenTop, courtW, kH); ctx.clip();
+    ctx.strokeStyle = 'rgba(255,255,255,0.14)'; ctx.lineWidth = 6;
+    for (let diag = -kH; diag < courtW + kH; diag += 20) {
+      ctx.beginPath(); ctx.moveTo(COURT.left + diag, COURT.kitchenTop); ctx.lineTo(COURT.left + diag - kH, COURT.kitchenBottom); ctx.stroke();
+    }
+    ctx.restore();
+
+    ctx.fillStyle = 'rgba(255,255,255,0.68)';
+    ctx.font = 'bold 10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🚫 KITCHEN 廚房非截擊區 (NVZ)', COURT.centerX, COURT.kitchenTop + 36);
+    ctx.fillText('🚫 禁打空中未落地球', COURT.centerX, COURT.kitchenBottom - 26);
 
     if (phase === 'serve') {
       const box = getServeTargetBox();
-      ctx.fillStyle = 'rgba(34, 197, 94, 0.32)';
+      ctx.fillStyle = 'rgba(74, 222, 128, 0.38)';
       ctx.fillRect(box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
-      ctx.strokeStyle = '#4ade80';
-      ctx.lineWidth = 2.5;
-      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = '#fef08a'; ctx.lineWidth = 2.5; ctx.setLineDash([6, 4]);
       ctx.strokeRect(box.x1 + 2, box.y1 + 2, box.x2 - box.x1 - 4, box.y2 - box.y1 - 4);
       ctx.setLineDash([]);
-      ctx.fillStyle = '#bbf7d0';
-      ctx.font = 'bold 12px sans-serif';
+      ctx.fillStyle = '#fef9c3'; ctx.font = 'bold 11px sans-serif';
       ctx.fillText('🎯 目標發球區', (box.x1 + box.x2) / 2, (box.y1 + box.y2) / 2 + 4);
     }
 
-    ctx.strokeStyle = '#f8fafc';
-    ctx.lineWidth = 3;
-    ctx.strokeRect(COURT.left, COURT.top, COURT.right - COURT.left, COURT.bottom - COURT.top);
+    // 5. 球場鮮明白線
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3.2;
+    ctx.strokeRect(COURT.left, COURT.top, courtW, courtH);
     ctx.beginPath();
-    ctx.moveTo(COURT.left, COURT.kitchenTop);
-    ctx.lineTo(COURT.right, COURT.kitchenTop);
-    ctx.moveTo(COURT.left, COURT.kitchenBottom);
-    ctx.lineTo(COURT.right, COURT.kitchenBottom);
-    ctx.moveTo(COURT.centerX, COURT.top);
-    ctx.lineTo(COURT.centerX, COURT.kitchenTop);
-    ctx.moveTo(COURT.centerX, COURT.kitchenBottom);
-    ctx.lineTo(COURT.centerX, COURT.bottom);
+    ctx.moveTo(COURT.left, COURT.kitchenTop); ctx.lineTo(COURT.right, COURT.kitchenTop);
+    ctx.moveTo(COURT.left, COURT.kitchenBottom); ctx.lineTo(COURT.right, COURT.kitchenBottom);
+    ctx.moveTo(COURT.centerX, COURT.top); ctx.lineTo(COURT.centerX, COURT.kitchenTop);
+    ctx.moveTo(COURT.centerX, COURT.kitchenBottom); ctx.lineTo(COURT.centerX, COURT.bottom);
     ctx.stroke();
 
+    // 6. 繪製戶外周邊設施、觀眾席與高腳椅主審裁判
+    drawSidelineAndCrowd();
+    drawReferee();
+
+    // 跑動塵土粒子
+    dustPuffs.forEach(d => {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, d.life * 0.45);
+      ctx.fillStyle = '#cbd5e1';
+      ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+
+    // 落地衝擊波 (Shockwaves)
+    shockwaves.forEach(sw => {
+      ctx.save(); ctx.globalAlpha = Math.max(0, sw.life);
+      ctx.strokeStyle = sw.color; ctx.lineWidth = 2.5 * sw.life;
+      ctx.beginPath(); ctx.ellipse(sw.x, sw.y, sw.r, sw.r * 0.65, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+    });
+
+    // 5. 3D 飛行拋物線虛線與第 1、2 跳落點標記
     if (phase === 'rally') {
       if (ball.bounces === 0 && ball.arcPoints.length > 2) {
         const arcColor = ball.spin === 'topspin' ? 'rgba(251, 146, 60, 0.55)' :
                          ball.spin === 'slice' ? 'rgba(56, 189, 248, 0.55)' :
-                         ball.spin === 'lob' ? 'rgba(192, 132, 252, 0.65)' :
+                         ball.spin === 'lob' || ball.spin === 'popup' ? 'rgba(192, 132, 252, 0.65)' :
                          ball.spin === 'dink' ? 'rgba(52, 211, 153, 0.55)' : 'rgba(250, 204, 21, 0.55)';
         ctx.save();
-        ctx.strokeStyle = arcColor;
-        ctx.lineWidth = 2.2;
-        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = arcColor; ctx.lineWidth = 2.2; ctx.setLineDash([4, 4]);
         ctx.beginPath();
         for (let i = 0; i < ball.arcPoints.length; i++) {
           const pt = ball.arcPoints[i];
@@ -2186,343 +2151,485 @@
         ctx.restore();
       }
 
-      if (ball.landing1 && ball.bounces === 0) {
+      if (ball.bounces === 0 && ball.landing1) {
         const l1 = ball.landing1;
         const prog = Math.min(1, l1.curStep / l1.totalSteps);
         const ringR = 24 * (1 - prog * 0.7) + 5;
-
         ctx.save();
-        ctx.strokeStyle = '#facc15';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(l1.x, l1.y, ringR, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.fillStyle = 'rgba(250, 204, 21, 0.35)';
-        ctx.beginPath();
-        ctx.arc(l1.x, l1.y, 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#fef08a';
+        ctx.strokeStyle = ball.isPopup ? '#ef4444' : '#facc15';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath(); ctx.arc(l1.x, l1.y, ringR, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = ball.isPopup ? 'rgba(239, 68, 68, 0.35)' : 'rgba(250, 204, 21, 0.35)';
+        ctx.beginPath(); ctx.arc(l1.x, l1.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = ball.isPopup ? '#fecaca' : '#fef08a';
         ctx.font = 'bold 10px sans-serif';
-        ctx.fillText('🎯第1跳', l1.x, l1.y - ringR - 4);
+        ctx.fillText(ball.isPopup ? '💥扣殺點' : '🎯第1跳', l1.x, l1.y - ringR - 4);
         ctx.restore();
       }
 
       if (ball.landing2 && ball.bounces <= 1) {
         const l2 = ball.landing2;
         ctx.save();
-        ctx.strokeStyle = 'rgba(248, 113, 113, 0.85)';
-        ctx.lineWidth = 1.8;
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath();
-        ctx.arc(l2.x, l2.y, 12, 0, Math.PI * 2);
-        ctx.stroke();
+        ctx.strokeStyle = 'rgba(248, 113, 113, 0.75)';
+        ctx.lineWidth = 1.6; ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.arc(l2.x, l2.y, 10, 0, Math.PI * 2); ctx.stroke();
         if (ball.landing1) {
-          ctx.beginPath();
-          ctx.moveTo(ball.landing1.x, ball.landing1.y);
-          ctx.lineTo(l2.x, l2.y);
-          ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(ball.landing1.x, ball.landing1.y); ctx.lineTo(l2.x, l2.y); ctx.stroke();
         }
         ctx.setLineDash([]);
-        ctx.fillStyle = '#fca5a5';
-        ctx.font = 'bold 10px sans-serif';
-        ctx.fillText('⚠️第2跳', l2.x, l2.y + 22);
+        ctx.fillStyle = '#fca5a5'; ctx.font = 'bold 9.5px sans-serif';
+        ctx.fillText('⚠️第2跳', l2.x, l2.y + 20);
         ctx.restore();
       }
     }
 
     drawChibiCharacter(ai, false);
-
-    ctx.fillStyle = 'rgba(0,0,0,0.35)';
-    ctx.fillRect(COURT.left - 12, COURT.netY + 2, COURT.right - COURT.left + 24, 5);
-    ctx.strokeStyle = '#e2e8f0';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(COURT.left - 12, COURT.netY);
-    ctx.lineTo(COURT.right + 12, COURT.netY);
-    ctx.stroke();
-
+    drawRealisticNet();
     drawPlayerHitIndicator();
     drawChibiCharacter(player, true);
+
+    // 揮拍刀光殘影
+    swingArcs.forEach(sa => {
+      ctx.save(); ctx.globalAlpha = Math.max(0, sa.life);
+      ctx.strokeStyle = sa.color; ctx.lineWidth = 4.5 * sa.life; ctx.lineCap = 'round';
+      ctx.beginPath();
+      const startAng = sa.isPlayer ? -Math.PI * 0.85 : Math.PI * 0.15;
+      const endAng = sa.isPlayer ? -Math.PI * 0.15 : Math.PI * 0.85;
+      ctx.arc(sa.x, sa.y, sa.r || 24, startAng, endAng); ctx.stroke();
+      ctx.restore();
+    });
+
     drawBallAndSpin();
 
     particles.forEach(p => {
-      ctx.globalAlpha = Math.max(0, p.life);
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
     });
     ctx.globalAlpha = 1;
 
     floatTexts.forEach(ft => {
       ctx.globalAlpha = Math.max(0, ft.life);
-      ctx.font = 'bold 13px sans-serif';
-      ctx.textAlign = 'center';
-      const clampedFtX = Math.max(48, Math.min(W - 48, ft.x));
-      const clampedFtY = Math.max(-6, Math.min(H - 6, ft.y));
-      ctx.fillStyle = '#000';
-      ctx.fillText(ft.text, clampedFtX + 1, clampedFtY + 1);
-      ctx.fillStyle = ft.color;
-      ctx.fillText(ft.text, clampedFtX, clampedFtY);
+      ctx.font = 'bold 12.5px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#000'; ctx.fillText(ft.text, ft.x + 1, ft.y + 1);
+      ctx.fillStyle = ft.color; ctx.fillText(ft.text, ft.x, ft.y);
     });
     ctx.globalAlpha = 1;
 
     if (announcement.timer > 0) {
       ctx.save();
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
-      ctx.strokeStyle = announcement.color;
-      ctx.lineWidth = 2.5;
-      const bw = 340, bh = 74;
-      const bx = (W - bw) / 2, by = COURT.netY - bh / 2;
-      ctx.beginPath();
-      ctx.roundRect(bx, by, bw, bh, 12);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = announcement.color;
-      ctx.font = 'bold 16px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(announcement.title, W / 2, by + 26);
-
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = 'bold 12px sans-serif';
-      const lines = announcement.sub.split('\n');
-      lines.forEach((ln, idx) => {
-        ctx.fillText(ln, W / 2, by + 46 + idx * 16);
-      });
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.94)'; ctx.strokeStyle = announcement.color; ctx.lineWidth = 2.5;
+      const bw = 350, bh = 74; const bx = (W - bw) / 2, by = COURT.netY - bh / 2;
+      ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 12); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = announcement.color; ctx.font = 'bold 15px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(announcement.title, W / 2, by + 25);
+      ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 11.5px sans-serif';
+      announcement.sub.split('\n').forEach((ln, idx) => { ctx.fillText(ln, W / 2, by + 45 + idx * 16); });
       ctx.restore();
     }
 
     ctx.restore();
   }
 
+  /* 繪製戶外選手休息區、遮陽傘與場邊動態觀眾 */
+  function drawSidelineAndCrowd() {
+    ctx.save();
+
+    // 左側選手休息木長椅與水箱
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.fillRect(10, 272, 20, 66);
+    ctx.fillStyle = '#d97706';
+    ctx.strokeStyle = '#fef3c7';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.roundRect(8, 270, 18, 64, 4);
+    ctx.fill(); ctx.stroke();
+
+    // 運動冰桶 (Cooler)
+    ctx.fillStyle = '#ef4444';
+    ctx.strokeStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.roundRect(9, 342, 16, 18, 3);
+    ctx.fill(); ctx.stroke();
+
+    // 戶外紅白條紋遮陽傘 (Sun Umbrella)
+    const ux = 18, uy = 290, ur = 19;
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.beginPath(); ctx.arc(ux + 3, uy + 4, ur, 0, Math.PI * 2); ctx.fill();
+    for (let i = 0; i < 8; i++) {
+      ctx.fillStyle = (i % 2 === 0) ? '#ef4444' : '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(ux, uy);
+      ctx.arc(ux, uy, ur, (i * Math.PI) / 4, ((i + 1) * Math.PI) / 4);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.fillStyle = '#fde047';
+    ctx.beginPath(); ctx.arc(ux, uy, 3, 0, Math.PI * 2); ctx.fill();
+
+    // 繪製左右兩側看台動態觀眾
+    const now = performance.now() * 0.006;
+    spectators.forEach((sp, idx) => {
+      const isLeft = sp.x < COURT.centerX;
+      const cheerBounce = crowdCheerTimer > 0 ? Math.abs(Math.sin(now * 2.4 + sp.phase)) * 6.5 : Math.sin(now * 0.7 + sp.phase) * 1.2;
+      const sx = sp.x;
+      const sy = sp.y - cheerBounce;
+
+      // 觀眾座椅與陰影
+      ctx.fillStyle = 'rgba(0,0,0,0.22)';
+      ctx.beginPath(); ctx.ellipse(sp.x, sp.y + 8, 9, 4.5, 0, 0, Math.PI * 2); ctx.fill();
+
+      // 身體球衣
+      ctx.fillStyle = sp.shirt;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.roundRect(sx - 7.5, sy - 4, 15, 11, 4);
+      ctx.fill(); ctx.stroke();
+
+      // 歡呼雙手揮舞
+      if (crowdCheerTimer > 0) {
+        const wave = Math.sin(now * 3 + idx) * 3;
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(sx - 7, sy - 1); ctx.lineTo(sx - 12, sy - 10 + wave);
+        ctx.moveTo(sx + 7, sy - 1); ctx.lineTo(sx + 12, sy - 10 - wave);
+        ctx.stroke();
+      }
+
+      // 觀眾頭部
+      ctx.fillStyle = '#fed7aa';
+      ctx.strokeStyle = '#7c2d12';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(sx, sy - 10, 7.5, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+
+      // 髮型或遮陽帽
+      ctx.fillStyle = sp.hair;
+      ctx.beginPath();
+      ctx.arc(sx, sy - 11.5, 7.6, Math.PI, Math.PI * 2);
+      ctx.fill();
+
+      if (sp.hat) {
+        ctx.fillStyle = sp.hat;
+        ctx.beginPath();
+        ctx.roundRect(sx - 7.5, sy - 16, 15, 4.5, 2);
+        ctx.fill();
+        // 帽簷朝向球場
+        ctx.fillRect(isLeft ? sx : sx - 9, sy - 13, 9, 2.5);
+      }
+
+      // 觀眾眼睛跟隨球移動
+      const lookDir = isLeft ? 1.8 : -1.8;
+      const lookY = Math.max(-1.5, Math.min(1.5, (ball.y - sy) * 0.01));
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(sx + lookDir - 1.8, sy - 9.5 + lookY, 1.3, 0, Math.PI * 2);
+      ctx.arc(sx + lookDir + 1.8, sy - 9.5 + lookY, 1.3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    ctx.restore();
+  }
+
+  /* 繪製場邊高腳椅主審裁判 (Umpire) */
+  function drawReferee() {
+    ctx.save();
+    const rx = referee.x;
+    const ry = referee.y;
+
+    // 高腳裁判椅陰影與金屬支架
+    ctx.fillStyle = 'rgba(0,0,0,0.28)';
+    ctx.beginPath(); ctx.ellipse(rx, ry + 16, 14, 6, 0, 0, Math.PI * 2); ctx.fill();
+
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    ctx.moveTo(rx - 9, ry + 15); ctx.lineTo(rx - 6, ry - 8);
+    ctx.moveTo(rx + 9, ry + 15); ctx.lineTo(rx + 6, ry - 8);
+    ctx.moveTo(rx - 8, ry + 6); ctx.lineTo(rx + 8, ry + 6);
+    ctx.moveTo(rx - 7, ry - 1); ctx.lineTo(rx + 7, ry - 1);
+    ctx.stroke();
+
+    // 裁判椅座墊
+    ctx.fillStyle = '#1e293b';
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.roundRect(rx - 10, ry - 12, 20, 8, 3);
+    ctx.fill(); ctx.stroke();
+
+    // 裁判身穿經典黑白條紋制服或深藍裁判衫
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.roundRect(rx - 8.5, ry - 23, 17, 13, 4);
+    ctx.fill(); ctx.stroke();
+
+    // 裁判舉手吹哨動作
+    if (referee.whistleTimer > 0) {
+      ctx.strokeStyle = '#fed7aa';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(rx - 7, ry - 19);
+      ctx.lineTo(rx - 15, ry - 29);
+      ctx.stroke();
+      // 小紅旗或哨音氣泡
+      ctx.fillStyle = '#fef08a';
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(rx - 48, ry - 48, 56, 15, 5);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#991b1b';
+      ctx.font = 'bold 8.5px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(referee.callText || '📢 FAULT!', rx - 20, ry - 38);
+    }
+
+    // 裁判頭部與遮陽帽
+    const headY = ry - 31;
+    ctx.fillStyle = '#fed7aa';
+    ctx.strokeStyle = '#7c2d12';
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.arc(rx, headY, 8.5, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+
+    // 裁判白色運動帽
+    ctx.fillStyle = '#f8fafc';
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.arc(rx, headY - 2, 8.6, Math.PI, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(rx - 12, headY - 3, 10, 2.6);
+
+    // 裁判視線即時追蹤球的位置
+    const lookY = Math.max(-2.2, Math.min(2.2, (ball.y - ry) * 0.014));
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.arc(rx - 3.5, headY + 0.5 + lookY, 1.5, 0, Math.PI * 2);
+    ctx.arc(rx + 1.0, headY + 0.5 + lookY, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 銀色哨子
+    ctx.fillStyle = '#cbd5e1';
+    ctx.beginPath();
+    ctx.arc(rx - 3.5, headY + 4.5, 2.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 裁判名牌
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
+    ctx.beginPath();
+    ctx.roundRect(rx - 16, ry + 15, 32, 11, 3);
+    ctx.fill();
+    ctx.fillStyle = '#fde047';
+    ctx.font = 'bold 8px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('👨‍⚖️裁判', rx, ry + 23);
+
+    ctx.restore();
+  }
+
+  function drawRealisticNet() {
+    ctx.save();
+    const netLeft = COURT.left - 12;
+    const netRight = COURT.right + 12;
+    const netWidth = netRight - netLeft;
+    const netHeight = 12;
+    const netTopY = COURT.netY - netHeight;
+
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(netLeft, COURT.netY + 2, netWidth, 6);
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.72)'; ctx.fillRect(netLeft, netTopY, netWidth, netHeight);
+
+    ctx.strokeStyle = 'rgba(203, 213, 225, 0.24)'; ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    for (let nx = netLeft + 6; nx < netRight; nx += 7) { ctx.moveTo(nx, netTopY + 2); ctx.lineTo(nx, COURT.netY); }
+    for (let ny = netTopY + 4; ny < COURT.netY; ny += 4) { ctx.moveTo(netLeft, ny); ctx.lineTo(netRight, ny); }
+    ctx.stroke();
+
+    ctx.fillStyle = '#e2e8f0'; ctx.fillRect(COURT.centerX - 2, netTopY, 4, netHeight);
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.roundRect(netLeft, netTopY - 1, netWidth, 4, 2); ctx.fill();
+
+    [netLeft, netRight].forEach(px => {
+      ctx.fillStyle = '#334155'; ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.roundRect(px - 3, netTopY - 2, 6, netHeight + 4, 2); ctx.fill(); ctx.stroke();
+    });
+    ctx.restore();
+  }
+
   function drawPlayerHitIndicator() {
+    const activeReach = assistMove ? player.hitReach : player.hitReach + 10;
     const dist = Math.hypot(ball.x - player.x, ball.y - player.y);
-    const inRange = (dist <= player.hitReach);
+    const inRange = (dist <= activeReach);
     const waitBounce = (phase === 'rally' && ball.lastHitter === 'ai' && rallyHits < 2 && ball.bounces === 0);
-    const canHit = (phase === 'rally' && ball.lastHitter === 'ai' && inRange && !waitBounce);
-    const badgeCenterX = Math.max(66, Math.min(W - 66, player.x));
+    const inKitchenWarning = (phase === 'rally' && player.y <= COURT.kitchenBottom + 1 && player.y >= COURT.netY && ball.bounces === 0);
+    const canHit = (phase === 'rally' && ball.lastHitter === 'ai' && inRange && !waitBounce && !inKitchenWarning);
 
     ctx.save();
-    if (canHit) {
-      ctx.strokeStyle = '#4ade80';
-      ctx.fillStyle = 'rgba(34, 197, 94, 0.18)';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.arc(player.x, player.y, player.hitReach * 0.72, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(player.x, player.y - 10);
-      ctx.lineTo(ball.x, ball.y - ball.z * 0.55);
-      ctx.stroke();
-
+    if (inKitchenWarning && ball.lastHitter === 'ai' && dist <= activeReach + 25) {
+      ctx.strokeStyle = '#ef4444'; ctx.fillStyle = 'rgba(239, 68, 68, 0.22)'; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.arc(player.x, player.y, activeReach * 0.68, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath(); ctx.roundRect(player.x - 66, player.y - 54, 132, 18, 5); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('🚫 廚房區禁截擊!(等落地)', player.x, player.y - 41);
+    } else if (canHit) {
+      ctx.strokeStyle = '#4ade80'; ctx.fillStyle = 'rgba(34, 197, 94, 0.16)'; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.arc(player.x, player.y, activeReach * 0.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       const tagText = canPlayerSmash() ? '💥 高球！按右下扣殺！' : '✨ 可擊球！現在揮拍';
       ctx.fillStyle = canPlayerSmash() ? '#dc2626' : '#16a34a';
-      ctx.beginPath();
-      ctx.roundRect(badgeCenterX - 62, player.y - 58, 124, 20, 6);
-      ctx.fill();
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(tagText, badgeCenterX, player.y - 44);
-    } else if (waitBounce && dist <= player.hitReach + 30) {
-      ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 4]);
-      ctx.beginPath();
-      ctx.arc(player.x, player.y, player.hitReach * 0.68, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      ctx.fillStyle = 'rgba(245, 158, 11, 0.9)';
-      ctx.beginPath();
-      ctx.roundRect(badgeCenterX - 68, player.y - 58, 136, 20, 6);
-      ctx.fill();
-      ctx.fillStyle = '#0f172a';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('⏳ 等球先落地 (雙跳規則)', badgeCenterX, player.y - 44);
-    } else {
-      ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.arc(player.x, player.y, player.hitReach * 0.65, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.roundRect(player.x - 58, player.y - 54, 116, 18, 5); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 10.5px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(tagText, player.x, player.y - 41);
+    } else if (waitBounce && dist <= activeReach + 30) {
+      ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 1.8; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.arc(player.x, player.y, activeReach * 0.65, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(245, 158, 11, 0.9)'; ctx.beginPath(); ctx.roundRect(player.x - 62, player.y - 54, 124, 18, 5); ctx.fill();
+      ctx.fillStyle = '#0f172a'; ctx.font = 'bold 10.5px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('⏳ 等球先落地 (雙跳)', player.x, player.y - 41);
+    } else if (!assistMove) {
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.28)'; ctx.lineWidth = 1.4; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.arc(player.x, player.y, activeReach * 0.66, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
     }
     ctx.restore();
   }
 
   function drawChibiCharacter(actor, isPlayer) {
     ctx.save();
-    const x = actor.x;
-    const y = actor.y;
+    const x = actor.x; const y = actor.y;
     const aiCfg = AI_LEVELS[aiDiffIdx];
 
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
-    ctx.beginPath();
-    ctx.ellipse(x, y + 6, 15, 6, 0, 0, Math.PI * 2);
-    ctx.fill();
+    // 地面陰影
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.36)';
+    ctx.beginPath(); ctx.ellipse(x, y + 6, 14.5, 5.8, 0, 0, Math.PI * 2); ctx.fill();
 
-    const legSwing = Math.sin(actor.walkPhase) * 4.5;
-    ctx.fillStyle = '#f8fafc';
-    ctx.strokeStyle = '#334155';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.ellipse(x - 6, y + 4 + legSwing, 4.5, 3, 0, 0, Math.PI * 2);
-    ctx.fill(); ctx.stroke();
-    ctx.beginPath();
-    ctx.ellipse(x + 6, y + 4 - legSwing, 4.5, 3, 0, 0, Math.PI * 2);
-    ctx.fill(); ctx.stroke();
+    // 雙腳擺動
+    const legSwing = Math.sin(actor.walkPhase) * 4.2;
+    ctx.fillStyle = '#f8fafc'; ctx.strokeStyle = '#334155'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.ellipse(x - 5.5, y + 4 + legSwing, 4.3, 2.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(x + 5.5, y + 4 - legSwing, 4.3, 2.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-    ctx.fillStyle = isPlayer ? '#1e3a8a' : '#1e293b';
-    ctx.beginPath();
-    ctx.roundRect(x - 9, y - 5, 18, 7, 3);
-    ctx.fill();
+    // 運動短褲
+    ctx.fillStyle = isPlayer ? '#1e3a8a' : '#0f172a';
+    ctx.beginPath(); ctx.roundRect(x - 8.5, y - 5, 17, 6.5, 3); ctx.fill();
 
+    // 球衣與領口
     const jerseyColor = isPlayer ? '#16a34a' : aiCfg.jersey;
-    ctx.fillStyle = jerseyColor;
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 1.6;
-    ctx.beginPath();
-    ctx.roundRect(x - 11, y - 18, 22, 15, 6);
-    ctx.fill();
-    ctx.stroke();
+    ctx.fillStyle = jerseyColor; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.roundRect(x - 10.5, y - 17, 21, 14, 5); ctx.fill(); ctx.stroke();
 
-    ctx.strokeStyle = '#fde047';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(x - 4, y - 17);
-    ctx.lineTo(x, y - 13);
-    ctx.lineTo(x + 4, y - 17);
-    ctx.stroke();
+    ctx.strokeStyle = '#fde047'; ctx.lineWidth = 1.3;
+    ctx.beginPath(); ctx.moveTo(x - 3.5, y - 16.5); ctx.lineTo(x, y - 13); ctx.lineTo(x + 3.5, y - 16.5); ctx.stroke();
 
-    const freeHandX = isPlayer ? x - 14 : x + 14;
-    const freeHandY = y - 11 - legSwing * 0.5;
-    ctx.fillStyle = '#fed7aa';
-    ctx.strokeStyle = '#9a3412';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    ctx.arc(freeHandX, freeHandY, 3.8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    // 非持拍手
+    const freeHandX = isPlayer ? x - 13.5 : x + 13.5;
+    const freeHandY = y - 10 - legSwing * 0.5;
+    ctx.fillStyle = '#fed7aa'; ctx.strokeStyle = '#9a3412'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(freeHandX, freeHandY, 3.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
+    // 持拍手與碳纖維球拍
     const swingProgress = actor.swingTimer > 0 ? Math.sin((15 - actor.swingTimer) * 0.35) : 0;
     const dir = isPlayer ? 1 : -1;
-    const shoulderX = x + dir * 11;
-    const shoulderY = y - 13;
-    const handX = shoulderX + dir * (6 + swingProgress * 6);
-    const handY = shoulderY - swingProgress * (isPlayer ? 9 : -9);
+    const shoulderX = x + dir * 10; const shoulderY = y - 12;
+    const handX = shoulderX + dir * (6 + swingProgress * 5.5);
+    const handY = shoulderY - swingProgress * (isPlayer ? 8.5 : -8.5);
 
-    ctx.strokeStyle = jerseyColor;
-    ctx.lineWidth = 4.5;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(shoulderX, shoulderY);
-    ctx.lineTo(handX, handY);
-    ctx.stroke();
+    ctx.strokeStyle = jerseyColor; ctx.lineWidth = 4.2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(shoulderX, shoulderY); ctx.lineTo(handX, handY); ctx.stroke();
 
     ctx.save();
     ctx.translate(handX, handY);
-    const baseAngle = isPlayer ? -0.35 - swingProgress * 1.15 : 0.35 + swingProgress * 1.15;
-    ctx.rotate(baseAngle);
-
-    ctx.fillStyle = '#f8fafc';
-    ctx.strokeStyle = '#475569';
-    ctx.lineWidth = 1.2;
-    ctx.fillRect(dir * 1, -2, dir * 6, 4);
-
-    const px = isPlayer ? 6 : -22;
-    ctx.fillStyle = '#0f172a';
-    ctx.strokeStyle = isPlayer ? '#38bdf8' : aiCfg.color;
-    ctx.lineWidth = 2.2;
+    ctx.rotate(isPlayer ? -0.35 - swingProgress * 1.15 : 0.35 + swingProgress * 1.15);
+    const px = isPlayer ? 5 : -20;
+    ctx.fillStyle = '#0f172a'; ctx.strokeStyle = isPlayer ? '#38bdf8' : aiCfg.color; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(px, -8.5, 15, 17, 4); ctx.fill(); ctx.stroke();
+    // 拍面網格甜區
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 0.8;
     ctx.beginPath();
-    ctx.roundRect(px, -9, 16, 18, 4.5);
-    ctx.fill();
+    ctx.moveTo(px + 3, -3); ctx.lineTo(px + 12, -3);
+    ctx.moveTo(px + 3, 2); ctx.lineTo(px + 12, 2);
     ctx.stroke();
 
-    ctx.strokeStyle = 'rgba(255,255,255,0.28)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(px + 4, -5); ctx.lineTo(px + 12, -5);
-    ctx.moveTo(px + 4, 0);  ctx.lineTo(px + 12, 0);
-    ctx.moveTo(px + 4, 5);  ctx.lineTo(px + 12, 5);
-    ctx.moveTo(px + 8, -6); ctx.lineTo(px + 8, 6);
-    ctx.stroke();
-
-    ctx.fillStyle = '#fed7aa';
-    ctx.strokeStyle = '#9a3412';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    ctx.arc(0, 0, 3.8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    ctx.fillStyle = '#fed7aa'; ctx.strokeStyle = '#9a3412'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(0, 0, 3.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.restore();
 
-    const headY = y - 28;
-    const headR = 12.5;
-    ctx.fillStyle = '#fed7aa';
-    ctx.strokeStyle = '#7c2d12';
-    ctx.lineWidth = 1.6;
+    // 頭部與髮型
+    const headY = y - 26.5; const headR = 12;
+    // 隨跑動飄揚的頭帶尾端
+    const ribbonWave = Math.sin(actor.walkPhase * 1.2) * 3;
+    ctx.strokeStyle = isPlayer ? '#facc15' : aiCfg.color;
+    ctx.lineWidth = 3; ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.arc(x, headY, headR, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(x - dir * 10, headY - 4);
+    ctx.quadraticCurveTo(x - dir * 16, headY - 2 + ribbonWave, x - dir * 19, headY + 2 + ribbonWave);
     ctx.stroke();
 
+    ctx.fillStyle = '#fed7aa'; ctx.strokeStyle = '#7c2d12'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(x, headY, headR, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+    // 頭髮與光澤
     ctx.fillStyle = isPlayer ? '#1e293b' : (aiDiffIdx === 0 ? '#3f3f46' : aiDiffIdx === 1 ? '#7f1d1d' : '#3b0764');
-    ctx.beginPath();
-    ctx.arc(x, headY - 2, headR + 0.5, Math.PI * 1.05, Math.PI * 1.95);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(x, headY - headR);
-    ctx.quadraticCurveTo(x + 5, headY - headR - 6, x + 8, headY - headR - 2);
-    ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, headY - 2, headR + 0.4, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();
 
+    // 運動頭帶
     ctx.fillStyle = isPlayer ? '#facc15' : aiCfg.color;
-    ctx.fillRect(x - headR + 1, headY - 6, (headR - 1) * 2, 4);
+    ctx.fillRect(x - headR + 1, headY - 6, (headR - 1) * 2, 3.8);
 
-    const lookX = Math.max(-2.2, Math.min(2.2, (ball.x - x) * 0.03));
-    const lookY = isPlayer ? -1 : 1.5;
-
+    // 眼神與表情細節
+    const lookX = Math.max(-2, Math.min(2, (ball.x - x) * 0.03));
     if (!isPlayer && actor.dizzyTimer > 0) {
-      ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.moveTo(x - 6, headY - 1); ctx.lineTo(x - 3, headY + 1); ctx.lineTo(x - 6, headY + 3);
       ctx.moveTo(x + 6, headY - 1); ctx.lineTo(x + 3, headY + 1); ctx.lineTo(x + 6, headY + 3);
       ctx.stroke();
+    } else if (actor.blinkTimer > 0) {
+      ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x - 6, headY + 1); ctx.lineTo(x - 2, headY + 1);
+      ctx.moveTo(x + 2, headY + 1); ctx.lineTo(x + 6, headY + 1);
+      ctx.stroke();
     } else {
       ctx.fillStyle = '#0f172a';
       ctx.beginPath();
-      ctx.arc(x - 4.2 + lookX, headY + 1 + lookY * 0.5, 2.1, 0, Math.PI * 2);
-      ctx.arc(x + 4.2 + lookX, headY + 1 + lookY * 0.5, 2.1, 0, Math.PI * 2);
+      ctx.arc(x - 4 + lookX, headY + 1, 2.1, 0, Math.PI * 2);
+      ctx.arc(x + 4 + lookX, headY + 1, 2.1, 0, Math.PI * 2);
       ctx.fill();
-
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(x - 4.8 + lookX, headY + 0.3, 0.8, 0, Math.PI * 2);
-      ctx.arc(x + 3.6 + lookX, headY + 0.3, 0.8, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = 'rgba(244, 63, 94, 0.35)';
-      ctx.beginPath();
-      ctx.ellipse(x - 7, headY + 3.5, 2.5, 1.3, 0, 0, Math.PI * 2);
-      ctx.ellipse(x + 7, headY + 3.5, 2.5, 1.3, 0, 0, Math.PI * 2);
+      ctx.arc(x - 4.6 + lookX, headY + 0.3, 0.8, 0, Math.PI * 2);
+      ctx.arc(x + 3.4 + lookX, headY + 0.3, 0.8, 0, Math.PI * 2);
       ctx.fill();
     }
 
+    // 腮紅
+    ctx.fillStyle = 'rgba(244, 63, 94, 0.32)';
+    ctx.beginPath();
+    ctx.ellipse(x - 6.8, headY + 3.5, 2.2, 1.1, 0, 0, Math.PI * 2);
+    ctx.ellipse(x + 6.8, headY + 3.5, 2.2, 1.1, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // AI 頭頂名牌與「重心穩定度條 (Poise Bar)」
     if (!isPlayer) {
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
-      ctx.beginPath();
-      ctx.roundRect(x - 24, headY - 26, 48, 13, 4);
-      ctx.fill();
-      ctx.fillStyle = aiCfg.color;
-      ctx.font = 'bold 9.5px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(`AI:${aiCfg.name}`, x, headY - 16);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+      ctx.beginPath(); ctx.roundRect(x - 28, headY - 30, 56, 18, 4); ctx.fill();
+      ctx.fillStyle = aiCfg.color; ctx.font = 'bold 9.5px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(`AI:${aiCfg.name}`, x, headY - 19);
+
+      // 穩定度條 (Poise Bar)
+      const poiseRatio = Math.max(0, Math.min(1, actor.poise / aiCfg.poiseMax));
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      ctx.fillRect(x - 22, headY - 15, 44, 2.5);
+      ctx.fillStyle = poiseRatio > 0.5 ? '#4ade80' : (poiseRatio > 0.25 ? '#facc15' : '#ef4444');
+      ctx.fillRect(x - 22, headY - 15, 44 * poiseRatio, 2.5);
     }
     ctx.restore();
   }
@@ -2533,69 +2640,50 @@
     for (let i = 0; i < ball.trail.length; i++) {
       const t = ball.trail[i];
       const ratio = (i + 1) / ball.trail.length;
-      const ty = t.y - t.z * 0.55;
       ctx.fillStyle = t.spin === 'topspin' ? `rgba(249, 115, 22, ${ratio * 0.55})` :
                       t.spin === 'slice' ? `rgba(56, 189, 248, ${ratio * 0.55})` :
-                      t.spin === 'lob' ? `rgba(192, 132, 252, ${ratio * 0.55})` :
-                      t.spin === 'dink' ? `rgba(52, 211, 153, ${ratio * 0.5})` :
-                      `rgba(250, 204, 21, ${ratio * 0.5})`;
-      ctx.beginPath();
-      ctx.arc(t.x, ty, 6 * ratio, 0, Math.PI * 2);
-      ctx.fill();
+                      t.spin === 'lob' || t.spin === 'popup' ? `rgba(192, 132, 252, ${ratio * 0.55})` : `rgba(250, 204, 21, ${ratio * 0.5})`;
+      ctx.beginPath(); ctx.arc(t.x, t.y - t.z * 0.55, 5.5 * ratio, 0, Math.PI * 2); ctx.fill();
     }
 
     ctx.save();
     const shadowScale = Math.max(0.35, 1 - ball.z / 170);
     ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-    ctx.beginPath();
-    ctx.ellipse(ball.x, ball.y, 9 * shadowScale, 5 * shadowScale, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(ball.x, ball.y, 8.5 * shadowScale, 4.8 * shadowScale, 0, 0, Math.PI * 2); ctx.fill();
 
     if (ball.z > 6) {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.moveTo(ball.x, ball.y);
-      ctx.lineTo(ball.x, drawY);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)'; ctx.lineWidth = 1.4; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ball.x, drawY); ctx.stroke(); ctx.setLineDash([]);
     }
 
-    const r = 7.5 + Math.min(5, ball.z * 0.038);
+    const r = 7.4 + Math.min(4.8, ball.z * 0.038);
 
+    // 上旋火紅與下旋冰藍氣流外環
     if (phase === 'rally') {
       if (ball.spin === 'topspin') {
-        ctx.strokeStyle = '#f97316';
-        ctx.lineWidth = 2.2;
-        ctx.beginPath();
-        ctx.arc(ball.x, drawY, r + 4, ball.spinAngle, ball.spinAngle + Math.PI * 1.3);
-        ctx.stroke();
+        ctx.strokeStyle = '#f97316'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(ball.x, drawY, r + 3.5, ball.spinAngle, ball.spinAngle + Math.PI * 1.25); ctx.stroke();
       } else if (ball.spin === 'slice') {
-        ctx.strokeStyle = '#38bdf8';
-        ctx.lineWidth = 2.2;
-        ctx.beginPath();
-        ctx.arc(ball.x, drawY, r + 4, ball.spinAngle, ball.spinAngle + Math.PI * 1.3);
-        ctx.stroke();
+        ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(ball.x, drawY, r + 3.5, ball.spinAngle, ball.spinAngle + Math.PI * 1.25); ctx.stroke();
+      } else if (ball.spin === 'popup') {
+        ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(ball.x, drawY, r + 4, 0, Math.PI * 2); ctx.stroke();
       }
     }
 
-    ctx.fillStyle = '#fde047';
-    ctx.strokeStyle = '#ca8a04';
-    ctx.lineWidth = 1.8;
-    ctx.beginPath();
-    ctx.arc(ball.x, drawY, r, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    const ballGrad = ctx.createRadialGradient(ball.x - r * 0.3, drawY - r * 0.3, r * 0.1, ball.x, drawY, r);
+    ballGrad.addColorStop(0, '#fef9c3'); ballGrad.addColorStop(0.55, '#fde047'); ballGrad.addColorStop(1, '#ca8a04');
+    ctx.fillStyle = ballGrad; ctx.strokeStyle = '#a16207'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(ball.x, drawY, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-    ctx.fillStyle = '#a16207';
+    // 匹克球洞洞旋轉細節
+    ctx.fillStyle = 'rgba(161, 98, 7, 0.75)';
     for (let i = 0; i < 4; i++) {
       const a = ball.spinAngle + i * (Math.PI / 2);
-      const hx = ball.x + Math.cos(a) * (r * 0.48);
-      const hy = drawY + Math.sin(a) * (r * 0.48);
-      ctx.beginPath();
-      ctx.arc(hx, hy, 1.5, 0, Math.PI * 2);
-      ctx.fill();
+      const hx = ball.x + Math.cos(a) * (r * 0.46);
+      const hy = drawY + Math.sin(a) * (r * 0.46);
+      ctx.beginPath(); ctx.arc(hx, hy, 1.3, 0, Math.PI * 2); ctx.fill();
     }
     ctx.restore();
   }
@@ -2606,11 +2694,9 @@
     requestAnimationFrame(loop);
   }
 
-  window.onload = function () {
-    setAiDifficulty(0, false);
-    setupServe();
-    requestAnimationFrame(loop);
-  };
+  setAiDifficulty(0, false);
+  setupServe();
+  requestAnimationFrame(loop);
 })();
 </script>
 </body>
