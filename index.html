@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -603,9 +603,9 @@
 
       <div id="tab-3" class="tut-page">
         <div class="info-card" style="border-left-color:#4ade80;">
-          <h4>🏃 輔助：開（智慧導航跑位 ＋ 搖桿瞄準）</h4>
-          <p>• 系統自動帶你跑向第 1 跳落點（包含自動上網救丁克短球，並在廚房線前智慧煞車防違例）。<br>
-             • 你只需專注抓擊球時機，並在揮拍瞬間輕推搖桿決定回球方向與深度！</p>
+          <h4>🏃 輔助：開（智慧導航跑位・AI 0% 失誤模式）</h4>
+          <p>• 系統自動帶你跑向第 1 跳落點。為避免只靠單鍵無腦得分，<b>開啟輔助時所有 AI 失誤率降為 0%</b>！<br>
+             • 若不推動搖桿且重複按同一顆擊球鍵，球只會打向中央且無法削減 AI 穩定度，必須<b>主動切換不同球種或推搖桿變線</b>才能破防創造高球扣殺機會！</p>
         </div>
         <div class="info-card" style="border-left-color:#38bdf8;">
           <h4>👟 輔助：關（純手動專家加成模式！）</h4>
@@ -927,7 +927,7 @@
     if (!assistMove) {
       showAnnouncement('👟 已切換【純手動專家模式】', '獲得移動速度 +12%、救球範圍擴大與刁鑽角度加成！', '#38bdf8', 1800);
     } else {
-      showAnnouncement('🏃 已開啟【智慧跑位輔助】', '系統自動導航至落點（含短球上網與廚房線煞車）！', '#4ade80', 1800);
+      showAnnouncement('🏃 已開啟【智慧跑位輔助】', '輔助模式下 AI 失誤率為 0%，請變換球種或推搖桿破防得分！', '#4ade80', 1800);
     }
   });
 
@@ -1180,12 +1180,14 @@
     const variedType = (!hasPrev || player.lastShotType !== shotType);
     const variedSide = (!hasPrev || (player.lastShotSide !== currentSide && currentSide !== 'center'));
     const dinkCross = (shotType === 'dink' && variedSide);
-    const isVaried = variedType || variedSide || dinkCross;
+    // 在開啟輔助跑動時，必須真正切換球種或手動推搖桿變線才算有變化，防止連按同一個按鈕自動變線得分
+    const isVaried = assistMove ? (variedType || (variedSide && Math.abs(getManualInputVector().x) >= 0.16)) : (variedType || variedSide || dinkCross);
 
     const aiAtNet = (ai.y > COURT.top + 88);
     const aiAtBaseline = (ai.y < COURT.top + 72);
     const hitAwayFromAI = Math.abs(targetX - ai.x) > 95;
-    const exploitedPos = (aiAtNet && shotType === 'lob') || (aiAtBaseline && (shotType === 'dink' || shotType === 'slice')) || hitAwayFromAI;
+    const exploitedPos = (!assistMove || variedType || Math.abs(getManualInputVector().x) >= 0.16) &&
+      ((aiAtNet && shotType === 'lob') || (aiAtBaseline && (shotType === 'dink' || shotType === 'slice')) || hitAwayFromAI);
 
     player.lastShotType = shotType;
     player.lastShotSide = currentSide;
@@ -1418,6 +1420,9 @@
       aimX = (ai.x < COURT.centerX) ? COURT.centerX + 95 : COURT.centerX - 95;
     } else if (Math.abs(inputVec.x) >= 0.16) {
       aimX = COURT.centerX + inputVec.x * angleSpread;
+    } else if (assistMove && player.lastShotType === actualShot) {
+      // 輔助開啟且重複按同一顆擊球鍵、又不推搖桿時，回球只會打向球場中央，無法自動幫玩家打角度得分
+      aimX = COURT.centerX + (Math.random() - 0.5) * 24;
     } else {
       aimX = (ai.x < COURT.centerX) ? COURT.centerX + 102 : COURT.centerX - 102;
     }
@@ -1567,10 +1572,10 @@
 
     const isStretched = (distToBall > cfg.hitReach * 0.78);
     const isBroken = (ai.poise <= 22);
-    const playerMonotonous = (player.sameTypeCount >= 2 && aiDiffIdx >= 1);
+    const playerMonotonous = (player.sameTypeCount >= 2 && (assistMove || aiDiffIdx >= 1));
 
-    // 計算受迫失誤與救球冒高 (Pop-up)
-    const effectiveErr = playerMonotonous ? 0 : (cfg.baseErr + (isBroken ? 0.16 : 0) + (isStretched ? 0.08 : 0));
+    // 當「🏃 輔助:開」時，所有 AI 的失誤率 (effectiveErr) 強制降為 0%，避免玩家只靠重複按單一按鍵等 AI 失誤得分
+    const effectiveErr = (assistMove || playerMonotonous) ? 0 : (cfg.baseErr + (isBroken ? 0.16 : 0) + (isStretched ? 0.08 : 0));
     const roll = Math.random();
 
     if (roll < effectiveErr) {
